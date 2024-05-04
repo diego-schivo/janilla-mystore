@@ -1,0 +1,34 @@
+<div class="products">
+	<h1>Products</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Collection</th>
+				<th>Status</th>
+				<th>Availability</th>
+				<th>Inventory</th>
+			</tr>
+		</thead>
+		<tbody>
+			<{items}>
+		</tbody>
+	</table>
+</div>
+
+<template id="Products-item">
+	<tr>
+		<td>
+			<a href="/admin/products/{id}">
+				<div class="thumbnail">
+					<img src="{thumbnail}" alt="{title}" />
+				</div>
+				{title}
+			</a>
+		</td>
+		<td>{collection}</td>
+		<td>{status}</td>
+		<td>{salesChannel}</td>
+		<td>400 in stock for 4 variant(s)</td>
+	</tr>
+</template>

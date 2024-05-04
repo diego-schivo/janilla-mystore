@@ -1,0 +1,21 @@
+.layout {
+	display: flex;
+	font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Ubuntu, sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	height: 100vh;
+	line-height: 1.5rem;
+	width: 100%;
+
+	> .content-parent {
+		background: rgb(249, 250, 251);
+		display: flex;
+		flex: auto;
+		justify-content: center;
+		padding: 2rem;
+
+		> * {
+			max-width: 80rem;
+		}
+	}
+}

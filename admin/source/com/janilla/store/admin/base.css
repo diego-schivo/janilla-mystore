@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("/fonts/fontawesome/css/fontawesome.min.css");
+@import url("/fonts/fontawesome/css/brands.min.css");
+@import url("/fonts/fontawesome/css/solid.min.css");
+
+body,
+h1,
+p,
+ul,
+dd {
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2 {
+	color: rgb(17, 24, 39);
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+ul {
+	list-style: none;
+}

@@ -1,0 +1,62 @@
+<div class="product">
+	<a href="/admin/products">Back to Products</a>
+	<div class="columns">
+		<div>
+			<article>
+				<header>
+					<h1>{title}</h1>
+					<div>
+						<a href="#">{status}</a>
+						<div class="dropdown-menu">
+							<a href="#">
+								<i class="fa-solid fa-ellipsis"></i>
+							</a>
+							<ul>
+								<li>
+									<a href="#">
+										<i class="fa-solid fa-pen-to-square"></i>
+										<span>Edit General Information</span>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa-solid fa-trash-can"></i>
+										<span>Delete</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</header>
+				<p>{description}</p>
+				<h2>Details</h2>
+				<dl>
+					<dt>Subtitle</dt>
+					<dd>{subtitle}</dd>
+					<dt>Handle</dt>
+					<dd>{handle}</dd>
+					<dt>Type</dt>
+					<dd>{type}</dd>
+					<dt>Collection</dt>
+					<dd>{collection}</dd>
+					<dt>Discountable</dt>
+					<dd>{discountable}</dd>
+					<dt>Metadata</dt>
+					<dd>{Metadata}</dd>
+				</dl>
+				<h2>Sales channel</h2>
+				<p>{salesChannel}</p>
+			</article>
+		</div>
+		<div>
+			<article>
+				<h2>Thumbnail</h2>
+				<div class="images">
+					<div>
+						<img src="{thumbnail}" alt="{title}" />
+					</div>
+				</div>
+			</article>
+		</div>
+	</div>
+</div>

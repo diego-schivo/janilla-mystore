@@ -1,0 +1,27 @@
+.sidebar {
+	background: rgb(255, 255, 255);
+	border-right: 1px solid rgb(229, 231, 235);
+	flex: 0 240px;
+	padding: 1rem;
+	
+	a {
+		align-items: center;
+		border-radius: 8px;
+		color: rgb(107, 114, 128);
+		display: flex;
+		gap: .75rem;
+		padding: .375rem .5rem;
+
+		&.active,
+		&:hover {
+			background: rgb(243, 244, 246);
+		}
+	}
+	
+	i {
+		align-content: center;
+		height: 20px;
+		text-align: center;
+		width: 20px;
+	}
+}

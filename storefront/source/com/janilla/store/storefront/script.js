@@ -21,16 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+import Cart from "./Cart.js";
+import Checkout from "./Checkout.js";
+import Product from "./Product.js";
 
-import java.time.Instant;
-import java.util.List;
-
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
-
-@Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
-}
+addEventListener("DOMContentLoaded", () => {
+	if (document.querySelector(".product")) {
+		const p = new Product();
+		p.selector = () => document.querySelector(".product");
+		p.listen();
+	}
+	if (document.querySelector(".cart")) {
+		const c = new Cart();
+		c.selector = () => document.querySelector(".cart");
+		c.listen();
+	}
+	if (document.querySelector(".checkout")) {
+		const c = new Checkout();
+		c.selector = () => document.querySelector(".checkout");
+		c.listen();
+	}
+});

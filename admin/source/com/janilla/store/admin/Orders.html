@@ -1,0 +1,31 @@
+<div class="orders">
+	<h1>Orders</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Order</th>
+				<th>Date added</th>
+				<th>Customer</th>
+				<th>Fulfillment</th>
+				<th>Payment status</th>
+				<th>Sales Channel</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			<{items}>
+		</tbody>
+	</table>
+</div>
+
+<template id="Orders-item">
+	<tr>
+		<td>
+			<a href="/admin/orders/{id}">#{id}</a>
+		</td>
+		<td>{collection}</td>
+		<td>{status}</td>
+		<td>{salesChannel}</td>
+		<td>400 in stock for 4 variant(s)</td>
+	</tr>
+</template>

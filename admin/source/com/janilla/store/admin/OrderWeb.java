@@ -21,16 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+package com.janilla.store.admin;
 
-import java.time.Instant;
-import java.util.List;
+import com.janilla.persistence.Persistence;
+import com.janilla.store.backend.Order;
+import com.janilla.web.Handle;
+import com.janilla.web.Render;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
+public class OrderWeb {
 
-@Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+	public Persistence persistence;
+
+	@Handle(method = "GET", path = "/admin/orders")
+	public Orders getOrders() {
+		var ii = persistence.getCrud(Order.class).list();
+		var oo = persistence.getCrud(Order.class).read(ii).toList();
+		return new Orders(oo);
+	}
+
+	@Handle(method = "GET", path = "/admin/orders/(\\d+)")
+	public @Render("Order.html") Order getOrder(Long id) {
+		var o = persistence.getCrud(Order.class).read(id);
+		return o;
+	}
 }

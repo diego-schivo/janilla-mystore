@@ -8,7 +8,7 @@
 	width: 100%;
 
 	> .content-parent {
-		background: rgb(249, 250, 251);
+		background: light-dark(rgb(249, 250, 251), rgb(27, 29, 30));
 		display: flex;
 		flex: auto;
 		justify-content: center;

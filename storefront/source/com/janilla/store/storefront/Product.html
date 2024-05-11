@@ -1,0 +1,28 @@
+<div class="product">
+	<div>
+		<p>{collection}</p>
+		<h1>{title}</h1>
+		<p>{description}</p>
+		<ul>
+			<li>Product Information</li>
+			<li>Shipping &amp; Returns</li>
+		</ul>
+	</div>
+	<div class="image-gallery">
+		<ul>
+			<{images}>
+		</ul>
+	</div>
+	<div>
+		<h2>${variant.price}</h2>
+		<form>
+			<button name="variant" value="{variant.id}" class="button">Add to cart</button>
+		</form>
+	</div>
+</div>
+
+<template id="Product-image">
+	<li>
+		<img src="{}" alt="{title}" />
+	</li>
+</template>

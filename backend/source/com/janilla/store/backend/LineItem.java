@@ -23,14 +23,37 @@
  */
 package com.janilla.store.backend;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
 
 import com.janilla.persistence.Index;
+import com.janilla.persistence.Persistence;
 import com.janilla.persistence.Store;
 
 @Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+public record LineItem(Long id, Instant createdAt, @Index Long cart, @Index Long order, String title, String thumbnail,
+		BigDecimal unitPrice, Long variant, Long product, Integer quantity) {
+
+	public static LineItem of(ProductVariant variant, Persistence persistence) {
+		var p = persistence.getCrud(Product.class).read(variant.product());
+		MoneyAmount a;
+		{
+			var i = persistence.getCrud(MoneyAmount.class).find("variant", variant.id());
+			a = persistence.getCrud(MoneyAmount.class).read(i);
+		}
+		return new LineItem(null, Instant.now(), null, null, p.title(), p.thumbnail(), a.amount(), variant.id(), p.id(),
+				1);
+	}
+
+	public LineItem withCart(Long cart) {
+		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity);
+	}
+
+	public LineItem withOrder(Long order) {
+		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity);
+	}
+
+	public LineItem withQuantity(Integer quantity) {
+		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity);
+	}
 }

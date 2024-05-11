@@ -1,0 +1,20 @@
+<div class="home">
+	<h1>Home</h1>
+	<ul>
+		<{products}>
+	</ul>
+</div>
+
+<template id="Home-product">
+	<li>
+		<a href="/products/{handle}">
+			<div class="thumbnail">
+				<img src="{thumbnail}" alt="{title}" />
+			</div>
+			<div class="title-parent">
+				<p>{title}</p>
+				<p>$41.50</p>
+			</div>
+		</a>
+	</li>
+</template>

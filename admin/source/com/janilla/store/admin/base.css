@@ -3,18 +3,30 @@
 @import url("/fonts/fontawesome/css/brands.min.css");
 @import url("/fonts/fontawesome/css/solid.min.css");
 
+:root {
+  color-scheme: light dark;
+}
+
 body,
 h1,
+h2,
+h3,
 p,
 ul,
+dl,
 dd {
 	margin: 0;
 	padding: 0;
 }
 
+body {
+	background: light-dark(rgb(255, 255, 255), rgb(24, 26, 27));
+}
+
 h1,
-h2 {
-	color: rgb(17, 24, 39);
+h2,
+h3 {
+	color: light-dark(rgb(17, 24, 39), rgb(214, 211, 205));
 }
 
 a {
@@ -24,4 +36,29 @@ a {
 
 ul {
 	list-style: none;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr {
+	border-bottom: 1px solid light-dark(rgb(229, 231, 235), rgb(54, 59, 61));
+	border-top: 1px solid light-dark(rgb(229, 231, 235), rgb(54, 59, 61));
+	cursor: pointer;
+	
+	&:hover {
+		background: light-dark(rgb(249, 250, 251), rgb(27, 29, 30));
+	}
+}
+
+th,
+td {
+	height: 40px;
+}
+
+th {
+	color: rgb(107, 114, 128);
+	text-align: left;
 }

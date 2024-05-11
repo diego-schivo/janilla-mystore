@@ -21,16 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+package com.janilla.store.storefront;
 
-import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
+import com.janilla.persistence.Persistence;
+import com.janilla.store.backend.Cart;
+import com.janilla.store.backend.LineItem;
+import com.janilla.store.backend.Order;
+import com.janilla.web.Handle;
+import com.janilla.web.Render;
 
-@Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+public class CheckoutWeb {
+
+	public Persistence persistence;
+
+	@Handle(method = "GET", path = "/checkout")
+	public @Render("Checkout.html") Object getCheckout() {
+		return "";
+	}
+
+	@Handle(method = "POST", path = "/checkout")
+	public @Render("Checkout-order.html") Order placeOrder() {
+		var c = persistence.getCrud(Cart.class).delete(1);
+		var o = persistence.getCrud(Order.class).create(Order.of());
+		List<LineItem> ii;
+		{
+			var jj = persistence.getCrud(LineItem.class).filter("cart", c.id());
+			ii = Arrays.stream(jj)
+					.mapToObj(
+							x -> persistence.getCrud(LineItem.class).update(x, y -> y.withCart(null).withOrder(o.id())))
+					.toList();
+		}
+		return o;
+	}
 }

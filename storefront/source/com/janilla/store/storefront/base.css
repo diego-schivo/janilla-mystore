@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("/fonts/fontawesome/css/fontawesome.min.css");
+@import url("/fonts/fontawesome/css/brands.min.css");
+@import url("/fonts/fontawesome/css/solid.min.css");
+
+* {
+	box-sizing: border-box;
+}
+
+body,
+h1,
+p,
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+ul {
+	list-style: none;
+}
+
+table {
+	width: 100%;
+}
+
+th {
+	text-align: left;
+}
+	
+.button {
+	align-content: center;
+	background: rgb(3, 7, 18);
+	border: 0;
+	border-radius: .375rem;
+	color: rgb(255, 255, 255);
+	cursor: pointer;
+	font-size: .8125rem;
+	font-weight: 500;
+	height: 2.5rem;
+	padding: .375rem .75rem;
+	text-align: center;
+	width: 100%;
+}

@@ -1,0 +1,50 @@
+.cart {
+	display: flex;
+	gap: 10rem;
+	margin: 0 auto;
+	max-width: 1440px;
+	padding: 1.5rem;
+
+	> div {
+		display: flex;
+		flex-direction: column;
+		
+		&:first-child {
+			flex: 1;
+		}
+
+		&:nth-child(2) {
+			flex: 0 360px;
+		}
+	}
+	
+	td > * {
+		align-items: center;
+		display: flex;
+		gap: 1rem;
+	}
+	
+	.thumbnail {
+		aspect-ratio: 1 / 1;
+		width: 6rem;
+	}
+	
+	img {
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		width: 100%;
+	}
+	
+	button {
+		background: transparent;
+		border: 0;
+		cursor: pointer;
+	}
+
+	.summary {
+		a {
+			background: rgb(3, 7, 18);
+		}
+	}
+}

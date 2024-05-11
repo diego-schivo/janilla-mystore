@@ -23,14 +23,12 @@
  */
 package com.janilla.store.backend;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
 
 import com.janilla.persistence.Index;
 import com.janilla.persistence.Store;
 
 @Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+public record MoneyAmount(Long id, Instant createdAt, String currencyCode, BigDecimal amount, @Index Long variant) {
 }

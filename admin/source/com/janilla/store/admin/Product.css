@@ -19,13 +19,17 @@
 		> div {
 			display: flex;
 			flex-direction: column;
+			gap: .5rem;
 		}
 	}
 			
 	article {
-		background: rgb(255, 255, 255);
-		border: 1px solid rgb(229, 231, 235);
+		background: light-dark(rgb(255, 255, 255), rgb(24, 26, 27));
+		border: 1px solid light-dark(rgb(229, 231, 235), rgb(54, 59, 61));
 		border-radius: 8px;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 		padding: 1.5rem 2rem 2rem;
 	}
 	
@@ -39,20 +43,25 @@
 		}
 	}
 	
-	h1 {
+	h1,
+	h2 {
 		font-size: 24px;
 		font-weight: 600;
 		line-height: 2.25rem;
 	}
 	
-	h2 {
+	h3 {
 		font-size: 14px;
 		font-weight: 600;
 		line-height: 1.5rem;
 	}
 	
-	dl {
+	dl,
+	p {
 		color: rgb(107, 114, 128);
+	}
+	
+	dl {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		row-gap: .75rem;
@@ -63,6 +72,24 @@
 		
 		&:empty::after {
 			content: "–";
+		}
+	}
+	
+	.options {
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1.25rem;
+
+		ul {
+			display: flex;
+			gap: .25rem;
+		}
+		
+		li {
+			background: light-dark(rgb(243, 244, 246), rgb(30, 32, 34));
+			border-radius: 8px;
+			color: light-dark(rgb(107, 114, 128), rgb(158, 149, 137));
+			padding: 6px .75rem;
 		}
 	}
 
@@ -91,13 +118,13 @@
 		position: relative;
 
 		ul {
-			background: rgb(255, 255, 255);
-			border: 1px solid rgb(229, 231, 235);
+			background: light-dark(rgb(255, 255, 255), rgb(24, 26, 27));
+			border: 1px solid light-dark(rgb(229, 231, 235), rgb(54, 59, 61));
 			border-radius: 8px;
 			box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
 				rgba(0, 0, 0, 0) 0px 0px 0px 0px,
 				rgba(0, 0, 0, 0.08) 0px 2px 16px 0px;
-			display: flex;
+			display: none;
 			flex-direction: column;
 			gap: .25rem;
 			left: 50%;
@@ -113,7 +140,7 @@
 				padding: 6px .75rem;
 				
 				&:hover {
-					background: rgb(249, 250, 251);
+					background: light-dark(rgb(249, 250, 251), rgb(27, 29, 30));
 				}
 			}
 			

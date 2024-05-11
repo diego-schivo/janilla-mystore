@@ -24,13 +24,18 @@
 package com.janilla.store.backend;
 
 import java.time.Instant;
-import java.util.List;
 
 import com.janilla.persistence.Index;
 import com.janilla.persistence.Store;
 
 @Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+public record ProductOption(Long id, Instant createdAt, String title, @Index Long product) {
+
+	public static ProductOption of(Product product) {
+		return new ProductOption(null, Instant.now(), null, product.id());
+	}
+
+	public ProductOption withTitle(String title) {
+		return new ProductOption(id, createdAt, title, product);
+	}
 }

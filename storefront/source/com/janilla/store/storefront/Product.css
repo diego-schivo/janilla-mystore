@@ -1,0 +1,28 @@
+.product {
+	align-items: start;
+	display: flex;
+	gap: 4rem;
+	margin: 0 auto;
+	max-width: 1440px;
+	padding: 1.5rem;
+	position: relative;
+	
+	> :not(.image-gallery) {
+		flex: 0 0 300px;
+		position: sticky;
+		top: 12rem;
+	}
+	
+	.image-gallery {
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+		
+		li {
+			border-radius: .5rem;
+			overflow: hidden;
+		}
+	}
+}

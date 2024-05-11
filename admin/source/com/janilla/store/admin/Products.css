@@ -1,6 +1,6 @@
 .products {
-	background: rgb(255, 255, 255);
-	border: 1px solid rgb(229, 231, 235);
+	background: light-dark(rgb(255, 255, 255), rgb(24, 26, 27));
+	border: 1px solid light-dark(rgb(229, 231, 235), rgb(54, 59, 61));
 	border-radius: 8px;
 	display: flex;
 	flex: auto;
@@ -14,31 +14,6 @@
 		font-size: 1rem;
 		font-weight: 600;
 		line-height: 1.5rem;
-	}
-	
-	table {
-		border-collapse: collapse;
-		width: 100%;
-	}
-	
-	tr {
-		border-bottom: 1px solid rgb(229, 231, 235);
-		border-top: 1px solid rgb(229, 231, 235);
-		cursor: pointer;
-		
-		&:hover {
-			background: rgb(249, 250, 251);
-		}
-	}
-	
-	th,
-	td {
-		height: 40px;
-	}
-
-	th {
-		color: rgb(107, 114, 128);
-		text-align: left;
 	}
 	
 	a {

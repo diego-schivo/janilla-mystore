@@ -23,14 +23,19 @@
  */
 package com.janilla.store.backend;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
 
-import com.janilla.persistence.Index;
 import com.janilla.persistence.Store;
 
 @Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+public record Cart(Long id, Instant createdAt, Long customer, Long salesChannel, BigDecimal total) {
+
+	public static Cart of() {
+		return new Cart(null, Instant.now(), null, null, BigDecimal.valueOf(0, 2));
+	}
+
+	public Cart withTotal(BigDecimal total) {
+		return new Cart(id, createdAt, customer, salesChannel, total);
+	}
 }

@@ -23,11 +23,81 @@
  */
 package com.janilla.store.storefront;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Properties;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import com.janilla.http.HttpExchange;
+import com.janilla.http.HttpServer;
+import com.janilla.io.IO;
+import com.janilla.persistence.ApplicationPersistenceBuilder;
+import com.janilla.persistence.Persistence;
+import com.janilla.reflect.Factory;
+import com.janilla.reflect.Reflection;
+import com.janilla.util.Lazy;
+import com.janilla.util.Util;
+import com.janilla.web.ApplicationHandlerBuilder;
+
 public class StoreStorefrontApp {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		var a = new StoreStorefrontApp();
+		{
+			var c = new Properties();
+			try (var s = a.getClass().getResourceAsStream("configuration.properties")) {
+				c.load(s);
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+			a.configuration = c;
+		}
+		a.getPersistence();
 
+		var s = new HttpServer();
+		s.setPort(Integer.parseInt(a.configuration.getProperty("store.server.port")));
+		s.setHandler(a.getHandler());
+		s.run();
 	}
 
+	public Properties configuration;
+
+	private Supplier<Factory> factory = Lazy.of(() -> {
+		var f = new Factory();
+		f.setTypes(Stream.concat(Util.getPackageClasses("com.janilla.store.backend"),
+				Util.getPackageClasses(getClass().getPackageName())).toList());
+		f.setEnclosing(this);
+		return f;
+	});
+
+	private Supplier<Persistence> persistence = Lazy.of(() -> {
+		var f = getFactory();
+		var b = f.newInstance(ApplicationPersistenceBuilder.class);
+		var p = Reflection.property(b.getClass(), "application");
+		if (p != null)
+			p.set(b, f.getEnclosing());
+		return b.build();
+	});
+
+	private Supplier<IO.Consumer<HttpExchange>> handler = Lazy.of(() -> {
+		var f = getFactory();
+		var b = f.newInstance(ApplicationHandlerBuilder.class);
+		var p = Reflection.property(b.getClass(), "application");
+		if (p != null)
+			p.set(b, f.getEnclosing());
+		return b.build();
+	});
+
+	public Factory getFactory() {
+		return factory.get();
+	}
+
+	public Persistence getPersistence() {
+		return persistence.get();
+	}
+
+	public IO.Consumer<HttpExchange> getHandler() {
+		return handler.get();
+	}
 }

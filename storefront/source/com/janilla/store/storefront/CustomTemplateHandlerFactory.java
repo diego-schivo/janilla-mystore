@@ -21,16 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+package com.janilla.store.storefront;
 
-import java.time.Instant;
-import java.util.List;
+import java.io.IOException;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
+import com.janilla.frontend.RenderEngine;
+import com.janilla.http.HttpExchange;
+import com.janilla.web.TemplateHandlerFactory;
 
-@Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {
+
+	static ThreadLocal<Layout> layout = new ThreadLocal<>();
+
+	@Override
+	protected void render(RenderEngine.Entry input, HttpExchange exchange) throws IOException {
+		var a = exchange.getRequest().getHeaders().get("Accept");
+		if (a.equals("*/*")) {
+			super.render(input, exchange);
+			return;
+		}
+		var l = layout.get();
+		var n = l == null;
+		if (n) {
+			l = new Layout(input);
+			layout.set(l);
+			input = RenderEngine.Entry.of(null, l, null);
+		}
+		try {
+			super.render(input, exchange);
+		} finally {
+			if (n)
+				layout.remove();
+		}
+	}
 }

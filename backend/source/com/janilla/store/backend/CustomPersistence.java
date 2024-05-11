@@ -23,6 +23,8 @@
  */
 package com.janilla.store.backend;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -55,22 +57,31 @@ public class CustomPersistence extends Persistence {
 			sweatshirt-vintage-front
 			coffee-mug
 			ls-black-front
-			tee-black-front""".lines().map(x -> "/images/" + x + ".webp")
-			.toList();
+			tee-black-front""".lines().map(x -> "/images/" + x + ".webp").toList();
 
 	public void seed() {
-//		for (var x : new String[] { "Hoodie", "Shorts", "Sweatpants", "Sweatshirt", "Coffee Mug", "Longsleeve",
-//				"T-Shirt" })
-//			getCrud(Product.class)
-//					.create(new Product(null, "Janilla " + x, "Merch", "Published", "Default Sales Channel", 400));
-
 		var r = ThreadLocalRandom.current();
+
+//		var c = getCrud(Currency.class).create(new Currency(null, Instant.now(), "USD", "$", "US Dollar"));
+//		var s = getCrud(Region.class).create(new Region(null, Instant.now(), "NA", c.id()));
+//		var d = getCrud(Country.class).create(new Country(null, Instant.now(), "United States", s.id()));
+		var sc = getCrud(SalesChannel.class).create(new SalesChannel(null, Instant.now(), "Default Sales Channel"));
+
 		for (var i = r.nextInt(5, 11); i > 0; i--) {
 			var t = Util.capitalizeFirstChar(Randomize.phrase(2, 2, () -> Randomize.element(w)));
-			var p = new Product(null, t, null, Randomize.sentence(20, 30, () -> Randomize.element(w)),
-					t.toLowerCase().replace(' ', '-'), "Published", Randomize.element(images), true, null, "Merch",
-					null, "Default Sales Channel");
-			getCrud(Product.class).create(p);
+			var s = Randomize.sentence(20, 30, () -> Randomize.element(w));
+			var h = t.toLowerCase().replace(' ', '-');
+			var u = Randomize.element(images);
+			var ii = u.contains("front") ? List.of(u, u.replace("front", "back")) : List.of(u);
+			var p = getCrud(Product.class).create(new Product(null, Instant.now(), t, null, s, h, "Published", ii, u,
+					true, null, "Merch", null, sc.id()));
+			var o = getCrud(ProductOption.class).create(ProductOption.of(p).withTitle("Size"));
+			for (var v : new String[] { "S", "M", "L", "XL" })
+				getCrud(ProductOptionValue.class).create(ProductOptionValue.of(o).withValue(v));
+			var v = getCrud(ProductVariant.class)
+					.create(ProductVariant.of(p).withTitle("One Size").withInventoryQuantity(100));
+			getCrud(MoneyAmount.class)
+					.create(new MoneyAmount(null, Instant.now(), "usd", BigDecimal.valueOf(1199, 2), v.id()));
 		}
 	}
 }

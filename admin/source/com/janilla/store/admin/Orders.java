@@ -21,16 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+package com.janilla.store.admin;
 
-import java.time.Instant;
 import java.util.List;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
+import com.janilla.store.backend.Order;
+import com.janilla.web.Render;
 
-@Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+@Render("Orders.html")
+public record Orders(List<@Render("Orders-item.html") Order> items) {
 }

@@ -24,13 +24,9 @@
 package com.janilla.store.backend;
 
 import java.time.Instant;
-import java.util.List;
 
-import com.janilla.persistence.Index;
 import com.janilla.persistence.Store;
 
 @Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+public record Region(Long id, Instant createdAt, String name, Long currency) {
 }

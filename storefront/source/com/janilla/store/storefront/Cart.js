@@ -21,16 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+export default class Cart {
 
-import java.time.Instant;
-import java.util.List;
+	selector;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
+	listen() {
+		this.selector().querySelectorAll("form").forEach(x => x.addEventListener("submit", this.handleFormSubmit));
+	}
 
-@Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+	handleFormSubmit = async event => {
+		const d = new FormData(event.currentTarget, event.submitter);
+		event.preventDefault();
+		const s = await fetch(location.pathname, {
+			method: "POST",
+			body: new URLSearchParams(d)
+		});
+		this.selector().outerHTML = await s.text();
+		this.listen();
+	}
 }

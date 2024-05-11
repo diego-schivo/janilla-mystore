@@ -1,51 +1,123 @@
 <div class="product">
-	<a href="/admin/products">Back to Products</a>
+	<a href="/admin/products">
+		<i class="fa-solid fa-arrow-left"></i>
+		Back to Products
+	</a>
 	<div class="columns">
 		<div>
 			<article>
-				<header>
-					<h1>{title}</h1>
-					<div>
-						<a href="#">{status}</a>
-						<div class="dropdown-menu">
-							<a href="#">
-								<i class="fa-solid fa-ellipsis"></i>
-							</a>
-							<ul>
-								<li>
-									<a href="#">
-										<i class="fa-solid fa-pen-to-square"></i>
-										<span>Edit General Information</span>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa-solid fa-trash-can"></i>
-										<span>Delete</span>
-									</a>
-								</li>
-							</ul>
+				<div>
+					<header>
+						<h1>{title}</h1>
+						<div>
+							<a href="#">{status}</a>
+							<div class="dropdown-menu">
+								<a href="#">
+									<i class="fa-solid fa-ellipsis"></i>
+								</a>
+								<ul>
+									<li>
+										<a href="#">
+											<i class="fa-solid fa-pen-to-square"></i>
+											<span>Edit General Information</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa-solid fa-trash-can"></i>
+											<span>Delete</span>
+										</a>
+									</li>
+								</ul>
+							</div>
 						</div>
-					</div>
-				</header>
-				<p>{description}</p>
-				<h2>Details</h2>
-				<dl>
-					<dt>Subtitle</dt>
-					<dd>{subtitle}</dd>
-					<dt>Handle</dt>
-					<dd>{handle}</dd>
-					<dt>Type</dt>
-					<dd>{type}</dd>
-					<dt>Collection</dt>
-					<dd>{collection}</dd>
-					<dt>Discountable</dt>
-					<dd>{discountable}</dd>
-					<dt>Metadata</dt>
-					<dd>{Metadata}</dd>
-				</dl>
-				<h2>Sales channel</h2>
-				<p>{salesChannel}</p>
+					</header>
+					<p>{description}</p>
+				</div>
+				<div>
+					<h3>Details</h3>
+					<dl>
+						<dt>Subtitle</dt>
+						<dd>{subtitle}</dd>
+						<dt>Handle</dt>
+						<dd>{handle}</dd>
+						<dt>Type</dt>
+						<dd>{type}</dd>
+						<dt>Collection</dt>
+						<dd>{collection}</dd>
+						<dt>Discountable</dt>
+						<dd>{discountable}</dd>
+						<dt>Metadata</dt>
+						<dd>{Metadata}</dd>
+					</dl>
+				</div>
+				<div>
+					<h3>Sales channel</h3>
+					<p>{salesChannel}</p>
+				</div>
+			</article>
+			<article>
+				<div>
+					<header>
+						<h2>Variants</h2>
+						<div>
+							<div class="dropdown-menu">
+								<a href="#">
+									<i class="fa-solid fa-ellipsis"></i>
+								</a>
+								<ul>
+									<li>
+										<a href="#">
+											<i class="fa-solid fa-pen-to-square"></i>
+											<span>Edit Variants</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</header>
+				</div>
+				<div class="options">
+					<{options}>
+				</div>
+				<div>
+					<h3>Product variants</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>Title</th>
+								<th>SKU</th>
+								<th>EAN</th>
+								<th>Inventory</th>
+							</tr>
+						</thead>
+						<tbody>
+							<{variants}>
+						</tbody>
+					</table>
+				</div>
+			</article>
+			<article>
+				<div>
+					<header>
+						<h2>Attributes</h2>
+						<div>
+							<div class="dropdown-menu">
+								<a href="#">
+									<i class="fa-solid fa-ellipsis"></i>
+								</a>
+								<ul>
+									<li>
+										<a href="#">
+											<i class="fa-solid fa-pen-to-square"></i>
+											<span>Edit Attributes</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</header>
+				</div>
 			</article>
 		</div>
 		<div>
@@ -57,6 +129,38 @@
 					</div>
 				</div>
 			</article>
+			<article>
+				<h2>Media</h2>
+				<{images}>
+			</article>
 		</div>
 	</div>
 </div>
+
+<template id="Product-option">
+	<div>
+		<h3>{title}</h3>
+		<ul>
+			<{values}>
+		</ul>
+	</div>
+</template>
+
+<template id="Product-optionValue">
+	<li>{value}</li>
+</template>
+
+<template id="Product-variant">
+	<tr>
+		<td>{title}</td>
+		<td>{sku}</td>
+		<td>{ean}</td>
+		<td>{inventoryQuantity}</td>
+	</tr>
+</template>
+
+<template id="Product-image">
+	<div>
+		<img src="{}" alt="{title}" />
+	</div>
+</template>

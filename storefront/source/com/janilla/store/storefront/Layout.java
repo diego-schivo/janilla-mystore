@@ -21,16 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+package com.janilla.store.storefront;
 
-import java.time.Instant;
-import java.util.List;
+import com.janilla.frontend.RenderEngine;
+import com.janilla.frontend.Renderer;
+import com.janilla.web.Render;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
+@Render("Layout.html")
+public record Layout(RenderEngine.Entry entry) implements Renderer {
 
-@Store
-public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+	@Override
+	public boolean evaluate(RenderEngine engine) {
+		record A(Layout layout, Object content) {
+		}
+		return engine.match(A.class, (i, o) -> {
+			o.setValue(entry.getValue());
+			o.setType(entry.getType());
+		});
+	}
 }

@@ -7,13 +7,13 @@
 	padding: 1.5rem;
 	position: relative;
 	
-	> :not(.image-gallery) {
+	> :not(.image-gallery-parent) {
 		flex: 0 0 300px;
 		position: sticky;
 		top: 12rem;
 	}
 	
-	.image-gallery {
+	.image-gallery-parent {
 		ul {
 			display: flex;
 			flex-direction: column;
@@ -23,6 +23,32 @@
 		li {
 			border-radius: .5rem;
 			overflow: hidden;
+		}
+	}
+
+	.options {
+		ul {
+			display: flex;
+			gap: .5rem;
+		}
+
+		li {
+			display: flex;
+			flex: 1 1 0;
+		}
+		
+		label {
+			border: 1px solid rgb(54, 59, 61);
+			border-radius: 8px;
+			cursor: pointer;
+			height: 2.5rem;
+			padding: .5rem;
+			text-align: center;
+			width: 100%;
+		}
+
+		:checked + label {
+			border-color: rgb(7, 64, 156);
 		}
 	}
 }

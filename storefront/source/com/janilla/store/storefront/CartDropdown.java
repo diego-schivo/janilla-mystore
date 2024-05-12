@@ -21,25 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+package com.janilla.store.storefront;
 
-import java.time.Instant;
+import com.janilla.web.Render;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
-
-@Store
-public record ProductOptionValue(Long id, Instant createdAt, String value, @Index Long option, @Index Long variant) {
-
-	public static ProductOptionValue of(ProductOption option) {
-		return new ProductOptionValue(null, Instant.now(), null, option.id(), null);
-	}
-
-	public ProductOptionValue withValue(String value) {
-		return new ProductOptionValue(id, createdAt, value, option, variant);
-	}
-
-	public ProductOptionValue withVariant(Long variant) {
-		return new ProductOptionValue(id, createdAt, value, option, variant);
-	}
+@Render("CartDropdown.html")
+public record CartDropdown() {
 }

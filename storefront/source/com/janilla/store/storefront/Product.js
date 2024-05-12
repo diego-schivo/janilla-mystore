@@ -26,7 +26,19 @@ export default class Product {
 	selector;
 
 	listen() {
-		this.selector().querySelector("form").addEventListener("submit", this.handleFormSubmit);
+		const e = this.selector();
+		e.querySelectorAll("input").forEach(x => x.addEventListener("change", this.handleInputChange));
+		e.querySelector("form").addEventListener("submit", this.handleFormSubmit);
+	}
+
+	handleInputChange = async event => {
+		const f = event.target.form;
+		const s = await fetch(`${location.pathname}/actions`, {
+			method: "PUT",
+			body: new URLSearchParams(new FormData(f))
+		});
+		f.closest("section").innerHTML = await s.text();
+		this.listen();
 	}
 
 	handleFormSubmit = async event => {

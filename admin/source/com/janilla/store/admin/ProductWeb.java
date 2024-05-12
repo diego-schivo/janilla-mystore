@@ -23,6 +23,7 @@
  */
 package com.janilla.store.admin;
 
+import java.net.URI;
 import java.util.List;
 
 import com.janilla.frontend.RenderEngine;
@@ -46,6 +47,19 @@ public class ProductWeb {
 		return Product2.of(p, persistence);
 	}
 
+	public record Option(@Flatten ProductOption option,
+			List<@Render("Product-optionValue.html") ProductOptionValue> values) {
+
+		public static Option of(ProductOption option, Persistence persistence) {
+			List<ProductOptionValue> vv;
+			{
+				var ii = persistence.getCrud(ProductOptionValue.class).filter("option", option.id());
+				vv = persistence.getCrud(ProductOptionValue.class).read(ii).toList();
+			}
+			return new Option(option, vv);
+		}
+	}
+
 	@Render("Product.html")
 	public record Product2(@Flatten Product product, List<@Render("Product-option.html") Option> options,
 			List<@Render("Product-variant.html") ProductVariant> variants) implements Renderer {
@@ -66,22 +80,12 @@ public class ProductWeb {
 
 		@Override
 		public boolean evaluate(RenderEngine engine) {
-			record A(String[] images, int index) {
+			record A(URI thumbnail) {
 			}
-			return engine.match(A.class, (i, o) -> o.setTemplate("Product-image.html"));
-		}
-	}
-
-	public record Option(@Flatten ProductOption option,
-			List<@Render("Product-optionValue.html") ProductOptionValue> values) {
-
-		public static Option of(ProductOption option, Persistence persistence) {
-			List<ProductOptionValue> vv;
-			{
-				var ii = persistence.getCrud(ProductOptionValue.class).filter("option", option.id());
-				vv = persistence.getCrud(ProductOptionValue.class).read(ii).toList();
+			record B(URI[] images, int index) {
 			}
-			return new Option(option, vv);
+			return engine.match(A.class, (i, o) -> o.setTemplate("Product-image.html"))
+					|| engine.match(B.class, (i, o) -> o.setTemplate("Product-image.html"));
 		}
 	}
 }

@@ -24,6 +24,7 @@
 package com.janilla.store.backend;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -32,6 +33,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.janilla.persistence.Persistence;
 import com.janilla.util.Randomize;
@@ -65,23 +67,26 @@ public class CustomPersistence extends Persistence {
 //		var c = getCrud(Currency.class).create(new Currency(null, Instant.now(), "USD", "$", "US Dollar"));
 //		var s = getCrud(Region.class).create(new Region(null, Instant.now(), "NA", c.id()));
 //		var d = getCrud(Country.class).create(new Country(null, Instant.now(), "United States", s.id()));
-		var sc = getCrud(SalesChannel.class).create(new SalesChannel(null, Instant.now(), "Default Sales Channel"));
+		var sc = getCrud(SalesChannel.class).create(SalesChannel.of("Default Sales Channel"));
 
 		for (var i = r.nextInt(5, 11); i > 0; i--) {
 			var t = Util.capitalizeFirstChar(Randomize.phrase(2, 2, () -> Randomize.element(w)));
 			var s = Randomize.sentence(20, 30, () -> Randomize.element(w));
 			var h = t.toLowerCase().replace(' ', '-');
 			var u = Randomize.element(images);
-			var ii = u.contains("front") ? List.of(u, u.replace("front", "back")) : List.of(u);
-			var p = getCrud(Product.class).create(new Product(null, Instant.now(), t, null, s, h, "Published", ii, u,
-					true, null, "Merch", null, sc.id()));
+			var ii = Stream.of(u)
+					.flatMap(x -> x.contains("front") ? Stream.of(x, x.replace("front", "back")) : Stream.of(x))
+					.map(URI::create).toList();
+			var p = getCrud(Product.class).create(new Product(null, Instant.now(), t, null, s, h, "Published", ii,
+					ii.get(0), true, null, "Merch", null, sc.id()));
 			var o = getCrud(ProductOption.class).create(ProductOption.of(p).withTitle("Size"));
-			for (var v : new String[] { "S", "M", "L", "XL" })
-				getCrud(ProductOptionValue.class).create(ProductOptionValue.of(o).withValue(v));
-			var v = getCrud(ProductVariant.class)
-					.create(ProductVariant.of(p).withTitle("One Size").withInventoryQuantity(100));
-			getCrud(MoneyAmount.class)
-					.create(new MoneyAmount(null, Instant.now(), "usd", BigDecimal.valueOf(1199, 2), v.id()));
+			for (var v : u.equals("coffee-mug") ? new String[] { "One Size" } : new String[] { "S", "M", "L", "XL" }) {
+				var w = getCrud(ProductVariant.class)
+						.create(ProductVariant.of(p).withTitle(v).withInventoryQuantity(100));
+				getCrud(ProductOptionValue.class).create(ProductOptionValue.of(o).withValue(v).withVariant(w.id()));
+				getCrud(MoneyAmount.class)
+						.create(MoneyAmount.of("usd", BigDecimal.valueOf(1199, 2)).withVariant(w.id()));
+			}
 		}
 	}
 }

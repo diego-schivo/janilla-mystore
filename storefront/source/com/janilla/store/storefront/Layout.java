@@ -30,6 +30,10 @@ import com.janilla.web.Render;
 @Render("Layout.html")
 public record Layout(RenderEngine.Entry entry) implements Renderer {
 
+	public Nav nav() {
+		return new Nav();
+	}
+
 	@Override
 	public boolean evaluate(RenderEngine engine) {
 		record A(Layout layout, Object content) {

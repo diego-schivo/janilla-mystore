@@ -3,6 +3,10 @@
 @import url("/fonts/fontawesome/css/brands.min.css");
 @import url("/fonts/fontawesome/css/solid.min.css");
 
+* {
+	box-sizing: border-box;
+}
+
 :root {
   color-scheme: light dark;
 }

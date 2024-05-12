@@ -23,13 +23,22 @@
  */
 package com.janilla.store.storefront;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.janilla.frontend.RenderEngine;
+import com.janilla.frontend.Renderer;
 import com.janilla.persistence.Persistence;
 import com.janilla.reflect.Flatten;
+import com.janilla.reflect.Parameter;
 import com.janilla.store.backend.Cart;
 import com.janilla.store.backend.LineItem;
+import com.janilla.store.backend.MoneyAmount;
 import com.janilla.store.backend.Product;
+import com.janilla.store.backend.ProductOption;
+import com.janilla.store.backend.ProductOptionValue;
 import com.janilla.store.backend.ProductVariant;
 import com.janilla.web.Handle;
 import com.janilla.web.Render;
@@ -39,23 +48,26 @@ public class ProductWeb {
 	public Persistence persistence;
 
 	@Handle(method = "GET", path = "/products/([\\w-]+)")
-	public Product2 getProduct(String handle) {
+	public Product2 get(String handle, Select select) {
 		Product p;
 		{
 			var i = persistence.getCrud(Product.class).find("handle", handle);
 			p = persistence.getCrud(Product.class).read(i);
 		}
-		ProductVariant v;
-		{
-			var i = persistence.getCrud(ProductVariant.class).find("product", p.id());
-			v = persistence.getCrud(ProductVariant.class).read(i);
-		}
-		return Product2.of(p, v);
+		var s = select != null && select.options != null
+				? select.options.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+				: null;
+		return Product2.of(p, s, persistence);
+	}
+
+	@Handle(method = "PUT", path = "/products/([\\w-]+)/actions")
+	public @Render("Product-actions.html") Product2 updateActions(String handle, Select select) {
+		return get(handle, select);
 	}
 
 	@Handle(method = "POST", path = "/products/([\\w-]+)")
-	public void addToCart(String handle, Add add) {
-		var v = persistence.getCrud(ProductVariant.class).read(add.variant);
+	public void addToCart(String handle, @Parameter("variant") Long variant) {
+		var v = persistence.getCrud(ProductVariant.class).read(variant);
 		var c = persistence.getCrud(Cart.class).read(1);
 		if (c == null)
 			c = persistence.getCrud(Cart.class).create(Cart.of());
@@ -76,15 +88,82 @@ public class ProductWeb {
 		persistence.getCrud(Cart.class).update(c.id(), x -> x.withTotal(x.total().add(a.i.unitPrice())));
 	}
 
-	@Render("Product.html")
-	public record Product2(@Flatten Product product, List<@Render("Product-image.html") String> images,
-			ProductVariant variant) {
+	public record Select(List<Map.Entry<Long, Long>> options) {
+	}
 
-		public static Product2 of(Product product, ProductVariant variant) {
-			return new Product2(product, product.images(), variant);
+	public record Option(@Flatten ProductOption option, List<@Render("Product-value.html") ProductOptionValue> values) {
+
+		public static Option of(ProductOption option, Persistence persistence) {
+			if (option == null)
+				return null;
+			List<ProductOptionValue> vv;
+			{
+				var ii = persistence.getCrud(ProductOptionValue.class).filter("option", option.id());
+				vv = persistence.getCrud(ProductOptionValue.class).read(ii).toList();
+			}
+			return new Option(option, vv);
 		}
 	}
 
-	public record Add(Long variant) {
+	@Render("Product.html")
+	public record Product2(@Flatten Product product, List<@Render("Product-option.html") Option> options,
+			Map<Long, Long> select, Variant variant) implements Renderer {
+
+		public static Product2 of(Product product, Map<Long, Long> bar, Persistence persistence) {
+			if (product == null)
+				return null;
+			List<Option> oo;
+			{
+				var ii = persistence.getCrud(ProductOption.class).filter("product", product.id());
+				oo = persistence.getCrud(ProductOption.class).read(ii).map(x -> Option.of(x, persistence)).toList();
+			}
+			ProductVariant v;
+			{
+				var ii = bar != null ? persistence.getCrud(ProductVariant.class).filter("product", product.id()) : null;
+				v = ii != null ? persistence.getCrud(ProductVariant.class).read(ii).filter(x -> {
+					var jj = persistence.getCrud(ProductOptionValue.class).filter("variant", x.id());
+					return persistence.getCrud(ProductOptionValue.class).read(jj)
+							.allMatch(y -> y.id().equals(bar.get(y.option())));
+				}).findFirst().orElse(null) : null;
+			}
+			return new Product2(product, oo, bar, Variant.of(v, persistence));
+		}
+
+		@Override
+		public boolean evaluate(RenderEngine engine) {
+			record A(URI[] images, int index) {
+			}
+			record B(Object actions) {
+			}
+			record C(ProductOptionValue value, Object checked) {
+			}
+			record D(Object addToCart) {
+			}
+			return engine.match(A.class, (i, o) -> o.setTemplate("Product-image.html"))
+					|| engine.match(B.class, (i, o) -> {
+						o.setValue("");
+						o.setTemplate("Product-actions.html");
+					}) || engine.match(C.class, (i, o) -> {
+						o.setValue(
+								select != null && i.value.id().equals(select.get(i.value.option())) ? "checked" : null);
+					}) || engine.match(D.class, (i, o) -> {
+						o.setValue("");
+						o.setTemplate(variant != null ? "Product-addToCart.html" : "Product-addToCart-disabled.html");
+					});
+		}
+	}
+
+	public record Variant(@Flatten ProductVariant variant, MoneyAmount price) {
+
+		public static Variant of(ProductVariant variant, Persistence persistence) {
+			if (variant == null)
+				return null;
+			List<MoneyAmount> pp;
+			{
+				var ii = persistence.getCrud(MoneyAmount.class).filter("variant", variant.id());
+				pp = persistence.getCrud(MoneyAmount.class).read(ii).toList();
+			}
+			return new Variant(variant, pp.get(0));
+		}
 	}
 }

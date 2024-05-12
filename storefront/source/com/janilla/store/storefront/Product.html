@@ -1,5 +1,5 @@
-<div class="product">
-	<div>
+<article class="product">
+	<section class="product-info-parent">
 		<p>{collection}</p>
 		<h1>{title}</h1>
 		<p>{description}</p>
@@ -7,22 +7,54 @@
 			<li>Product Information</li>
 			<li>Shipping &amp; Returns</li>
 		</ul>
-	</div>
-	<div class="image-gallery">
+	</section>
+	<section class="image-gallery-parent">
 		<ul>
 			<{images}>
 		</ul>
-	</div>
-	<div>
-		<h2>${variant.price}</h2>
-		<form>
-			<button name="variant" value="{variant.id}" class="button">Add to cart</button>
-		</form>
-	</div>
-</div>
+	</section>
+	<section class="product-actions-parent">
+		<{actions}>
+	</section>
+</article>
 
 <template id="Product-image">
 	<li>
 		<img src="{}" alt="{title}" />
 	</li>
+</template>
+
+<template id="Product-actions">
+	<form>
+		<div class="options">
+			<{options}>
+		</div>
+		<h2>${variant.price.amount}</h2>
+		<{addToCart}>
+	</form>
+</template>
+
+<template id="Product-option">
+	<input type="hidden" name="options[0].key" value="{id}" />
+	<fieldset>
+		<legend>Select {title}</legend>
+		<ul>
+			<{values}>
+		</ul>
+	</fieldset>
+</template>
+
+<template id="Product-value">
+	<li>
+		<input id="option-{option}-{id}" type="radio" name="options[0].value" value="{id}" data-{checked} class="screen-reader" />
+		<label for="option-{option}-{id}">{value}</label>
+	</li>
+</template>
+
+<template id="Product-addToCart-disabled">
+	<button class="button" disabled>Select variant</button>
+</template>
+
+<template id="Product-addToCart">
+	<button name="variant" value="{variant.id}" class="button">Add to cart</button>
 </template>

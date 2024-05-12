@@ -23,6 +23,7 @@
  */
 package com.janilla.store.backend;
 
+import java.net.URI;
 import java.time.Instant;
 import java.util.List;
 
@@ -31,6 +32,6 @@ import com.janilla.persistence.Store;
 
 @Store
 public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
-		@Index String handle, String status, List<String> images, String thumbnail, Boolean discountable,
-		String metadata, String collection, String type, Long salesChannel) {
+		@Index String handle, String status, List<URI> images, URI thumbnail, Boolean discountable, String metadata,
+		String collection, String type, Long salesChannel) {
 }

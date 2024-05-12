@@ -21,25 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.janilla.store.backend;
+export default class Nav {
 
-import java.time.Instant;
+	selector;
 
-import com.janilla.persistence.Index;
-import com.janilla.persistence.Store;
-
-@Store
-public record ProductOptionValue(Long id, Instant createdAt, String value, @Index Long option, @Index Long variant) {
-
-	public static ProductOptionValue of(ProductOption option) {
-		return new ProductOptionValue(null, Instant.now(), null, option.id(), null);
+	listen() {
+		// this.selector().querySelector(".cart-parent > a").addEventListener("hover", this.handleFormSubmit);
 	}
 
-	public ProductOptionValue withValue(String value) {
-		return new ProductOptionValue(id, createdAt, value, option, variant);
+	/*
+	handleFormSubmit = async event => {
+		event.preventDefault();
+		const s = await fetch(location.pathname, {
+			method: "POST"
+		});
+		this.selector().outerHTML = await s.text();
+		this.listen();
 	}
-
-	public ProductOptionValue withVariant(Long variant) {
-		return new ProductOptionValue(id, createdAt, value, option, variant);
-	}
+	*/
 }

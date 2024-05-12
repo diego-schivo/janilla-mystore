@@ -123,15 +123,15 @@
 		<div>
 			<article>
 				<h2>Thumbnail</h2>
-				<div class="images">
-					<div>
-						<img src="{thumbnail}" alt="{title}" />
-					</div>
-				</div>
+				<ul class="images">
+					<{thumbnail}>
+				</ul>
 			</article>
 			<article>
 				<h2>Media</h2>
-				<{images}>
+				<ul class="images">
+					<{images}>
+				</ul>
 			</article>
 		</div>
 	</div>
@@ -160,7 +160,7 @@
 </template>
 
 <template id="Product-image">
-	<div>
+	<li>
 		<img src="{}" alt="{title}" />
-	</div>
+	</li>
 </template>

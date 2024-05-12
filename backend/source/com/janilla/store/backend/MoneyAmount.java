@@ -31,4 +31,12 @@ import com.janilla.persistence.Store;
 
 @Store
 public record MoneyAmount(Long id, Instant createdAt, String currencyCode, BigDecimal amount, @Index Long variant) {
+
+	public static MoneyAmount of(String currencyCode, BigDecimal amount) {
+		return new MoneyAmount(null, Instant.now(), currencyCode, amount, null);
+	}
+
+	public MoneyAmount withVariant(Long variant) {
+		return new MoneyAmount(id, createdAt, currencyCode, amount, variant);
+	}
 }

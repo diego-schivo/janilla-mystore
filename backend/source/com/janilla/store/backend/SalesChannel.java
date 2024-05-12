@@ -29,4 +29,8 @@ import com.janilla.persistence.Store;
 
 @Store
 public record SalesChannel(Long id, Instant createdAt, String name) {
+
+	public static SalesChannel of(String name) {
+		return new SalesChannel(null, Instant.now(), name);
+	}
 }

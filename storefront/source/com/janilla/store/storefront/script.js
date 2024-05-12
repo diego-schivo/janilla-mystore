@@ -23,22 +23,28 @@
  */
 import Cart from "./Cart.js";
 import Checkout from "./Checkout.js";
+import Nav from "./Nav.js";
 import Product from "./Product.js";
 
 addEventListener("DOMContentLoaded", () => {
+	if (document.querySelector(".nav")) {
+		const x = new Nav();
+		x.selector = () => document.querySelector(".nav");
+		x.listen();
+	}
 	if (document.querySelector(".product")) {
-		const p = new Product();
-		p.selector = () => document.querySelector(".product");
-		p.listen();
+		const x = new Product();
+		x.selector = () => document.querySelector(".product");
+		x.listen();
 	}
 	if (document.querySelector(".cart")) {
-		const c = new Cart();
-		c.selector = () => document.querySelector(".cart");
-		c.listen();
+		const x = new Cart();
+		x.selector = () => document.querySelector(".cart");
+		x.listen();
 	}
 	if (document.querySelector(".checkout")) {
-		const c = new Checkout();
-		c.selector = () => document.querySelector(".checkout");
-		c.listen();
+		const x = new Checkout();
+		x.selector = () => document.querySelector(".checkout");
+		x.listen();
 	}
 });

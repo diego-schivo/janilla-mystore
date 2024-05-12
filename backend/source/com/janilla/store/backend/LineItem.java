@@ -24,6 +24,7 @@
 package com.janilla.store.backend;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.Instant;
 
 import com.janilla.persistence.Index;
@@ -31,7 +32,7 @@ import com.janilla.persistence.Persistence;
 import com.janilla.persistence.Store;
 
 @Store
-public record LineItem(Long id, Instant createdAt, @Index Long cart, @Index Long order, String title, String thumbnail,
+public record LineItem(Long id, Instant createdAt, @Index Long cart, @Index Long order, String title, URI thumbnail,
 		BigDecimal unitPrice, Long variant, Long product, Integer quantity) {
 
 	public static LineItem of(ProductVariant variant, Persistence persistence) {

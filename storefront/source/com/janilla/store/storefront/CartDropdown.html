@@ -1,4 +1,35 @@
 <article class="cart-dropdown">
 	<h3>Cart</h3>
+	<{items}>
+	<dl>
+		<dt>Subtotal (excl. taxes)</dt>
+		<dd>${subtotal}</dd>
+	</dl>
 	<a href="/cart" class="button">Go to cart</a>
 </article>
+
+<template id="CartDropdown-item">
+	<article>
+		<section>
+			<a href="/products/{product.handle}">
+				<div class="thumbnail-parent">
+					<img src="{thumbnail}" alt="{title}" />
+				</div>
+			</a>
+		</section>
+		<section>
+			<h3>{title}</h3>
+			<p>Variant: {variant.title}</p>
+			<p>Quantity: {quantity}</p>
+			<form>
+				<button name="item" value="{id}">
+					<i class="fa-solid fa-trash-can"></i>
+					Remove
+				</button>
+			</form>
+		</section>
+		<section>
+			<p>${unitPrice}</p>
+		</section>
+	</article>
+</template>

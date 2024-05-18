@@ -18,28 +18,56 @@
 		}
 	}
 	
-	td > * {
-		align-items: center;
-		display: flex;
-		gap: 1rem;
+	table {
+		font-size: .875rem;
+		line-height: 1.5rem;
+	}
+
+	tr {
+		border-bottom: 1px solid light-dark(rgb(229, 231, 235), rgb(54, 59, 61));
+
+		> * {
+			padding: 1rem 0;
+
+			&:last-child {
+				text-align: right;
+			}
+		}
+	}
+	
+	th {
+		color: rgb(177, 170, 160);
+	}
+
+	td {
+		> * {
+			align-items: center;
+			display: flex;
+			gap: 1rem;
+		}
 	}
 	
 	.thumbnail {
+		align-items: center;
 		aspect-ratio: 1 / 1;
+		border-radius: .5rem;
+		display: flex;
+		justify-content: center;
+		overflow: hidden;
 		width: 6rem;
-	}
-	
-	img {
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
-		width: 100%;
 	}
 	
 	button {
 		background: transparent;
 		border: 0;
 		cursor: pointer;
+		font-size: 1rem;
+	}
+	
+	select {
+		height: 2.5rem;
+		padding: 0 1rem;
+		width: 3.5rem;
 	}
 
 	.summary {

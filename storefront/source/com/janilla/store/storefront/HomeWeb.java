@@ -23,10 +23,16 @@
  */
 package com.janilla.store.storefront;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.LongStream;
 
 import com.janilla.persistence.Persistence;
+import com.janilla.reflect.Flatten;
+import com.janilla.store.backend.MoneyAmount;
 import com.janilla.store.backend.Product;
+import com.janilla.store.backend.ProductVariant;
 import com.janilla.web.Handle;
 import com.janilla.web.Render;
 
@@ -35,13 +41,26 @@ public class HomeWeb {
 	public Persistence persistence;
 
 	@Handle(method = "GET", path = "/")
-	public Page getProducts() {
+	public @Render("Home.html") List<Product2> getProducts() {
 		var ii = persistence.getCrud(Product.class).list();
-		var pp = persistence.getCrud(Product.class).read(ii).toList();
-		return new Page(pp);
+		var pp = persistence.getCrud(Product.class).read(ii).map(x -> Product2.of(x, persistence)).toList();
+		return pp;
 	}
 
-	@Render("Home.html")
-	public record Page(List<@Render("Home-product.html") Product> products) {
+	@Render("Home-product.html")
+	public record Product2(@Flatten Product product, BigDecimal price) {
+
+		public static Product2 of(Product product, Persistence persistence) {
+			if (product == null)
+				return null;
+			BigDecimal p;
+			{
+				var ii = persistence.getCrud(ProductVariant.class).filter("product", product.id());
+				var jj = persistence.getCrud(MoneyAmount.class).filter("variant", LongStream.of(ii).boxed().toArray());
+				p = persistence.getCrud(MoneyAmount.class).read(jj).map(MoneyAmount::amount)
+						.min(Comparator.naturalOrder()).orElse(null);
+			}
+			return new Product2(product, p);
+		}
 	}
 }

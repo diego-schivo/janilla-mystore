@@ -21,28 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export default class Cart {
+export default class CartDropdown {
 
 	selector;
 
 	listen() {
-		const e = this.selector();
-		e.querySelectorAll("form").forEach(x => x.addEventListener("submit", this.handleFormSubmit));
-		e.querySelectorAll("select").forEach(x => x.addEventListener("change", this.handleSelectChange));
+		this.selector().addEventListener("mouseleave", this.handleMouseLeave);
 	}
 
-	handleFormSubmit = async event => {
-		const d = new FormData(event.currentTarget, event.submitter);
-		event.preventDefault();
-		const s = await fetch(location.pathname, {
-			method: "POST",
-			body: new URLSearchParams(d)
-		});
-		this.selector().outerHTML = await s.text();
-		this.listen();
-	}
-
-	handleSelectChange = event => {
-		event.currentTarget.form.requestSubmit();
+	handleMouseLeave = event => {
+		event.currentTarget.classList.remove("visible");
 	}
 }

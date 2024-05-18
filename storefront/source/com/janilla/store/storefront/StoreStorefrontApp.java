@@ -55,7 +55,7 @@ public class StoreStorefrontApp {
 		}
 		a.getPersistence();
 
-		var s = new HttpServer();
+		var s = a.getFactory().newInstance(HttpServer.class);
 		s.setPort(Integer.parseInt(a.configuration.getProperty("store.server.port")));
 		s.setHandler(a.getHandler());
 		s.run();

@@ -48,5 +48,12 @@ export default class Product {
 			method: "POST",
 			body: new URLSearchParams(d)
 		});
+		/*
+		document.querySelector(".nav .cart-item").outerHTML = await s.text();
+		const e = document.querySelector(".nav .cart-dropdown");
+		e.classList.add("visible");
+		setTimeout(() => e.classList.remove("visible"), 5000);
+		*/
+		dispatchEvent(new CustomEvent("cartchange"));
 	}
 }

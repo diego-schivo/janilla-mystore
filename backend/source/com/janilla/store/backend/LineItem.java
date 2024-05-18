@@ -33,7 +33,7 @@ import com.janilla.persistence.Store;
 
 @Store
 public record LineItem(Long id, Instant createdAt, @Index Long cart, @Index Long order, String title, URI thumbnail,
-		BigDecimal unitPrice, Long variant, Long product, Integer quantity) {
+		BigDecimal unitPrice, Long variant, Long product, Integer quantity, BigDecimal total) {
 
 	public static LineItem of(ProductVariant variant, Persistence persistence) {
 		var p = persistence.getCrud(Product.class).read(variant.product());
@@ -43,18 +43,22 @@ public record LineItem(Long id, Instant createdAt, @Index Long cart, @Index Long
 			a = persistence.getCrud(MoneyAmount.class).read(i);
 		}
 		return new LineItem(null, Instant.now(), null, null, p.title(), p.thumbnail(), a.amount(), variant.id(), p.id(),
-				1);
+				1, a.amount());
 	}
 
 	public LineItem withCart(Long cart) {
-		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity);
+		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity, total);
 	}
 
 	public LineItem withOrder(Long order) {
-		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity);
+		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity, total);
 	}
 
 	public LineItem withQuantity(Integer quantity) {
-		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity);
+		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity, total);
+	}
+
+	public LineItem withTotal(BigDecimal total) {
+		return new LineItem(id, createdAt, cart, order, title, thumbnail, unitPrice, variant, product, quantity, total);
 	}
 }

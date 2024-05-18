@@ -17,6 +17,16 @@
 	</div>
 	<div class="summary">
 		<h2>Summary</h2>
+		<dl>
+			<dt>Subtotal</dt>
+			<dd>${subtotal}</dd>
+			<dt>Shipping</dt>
+			<dd>${shippingTotal}</dd>
+			<dt>Taxes</dt>
+			<dd>${taxTotal}</dd>
+			<dt>Total</dt>
+			<dd>${total}</dd>
+		</dl>
 		<a href="/checkout" class="button">Go to checkout</a>
 	</div>
 </div>
@@ -35,14 +45,26 @@
 			</a>
 		</td>
 		<td>
-			<form>
-				<button name="item" value="{id}">
-					<i class="fa-solid fa-trash-can"></i>
-				</button>
-				{quantity}
-			</form>
+			<div>
+				<form>
+					<button name="item" value="{id}">
+						<i class="fa-solid fa-trash-can"></i>
+					</button>
+				</form>
+				<form>
+					<input type="hidden" name="item" value="{id}" />
+					<select name="quantity">
+						<option value="" disabled>Select&hellip;</option>
+						<{quantityOptions}>
+					</select>
+				</form>
+			</div>
 		</td>
-		<td>{unitPrice}</td>
-		<td>{unitPrice}</td>
+		<td>${unitPrice}</td>
+		<td>${total}</td>
 	</tr>
+</template>
+
+<template id="Cart-quantityOption">
+	<option data-{selected}>{}</option>
 </template>

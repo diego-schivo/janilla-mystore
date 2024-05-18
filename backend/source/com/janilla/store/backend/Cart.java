@@ -29,13 +29,19 @@ import java.time.Instant;
 import com.janilla.persistence.Store;
 
 @Store
-public record Cart(Long id, Instant createdAt, Long customer, Long salesChannel, BigDecimal total) {
+public record Cart(Long id, Instant createdAt, Long customer, Long salesChannel, BigDecimal shippingTotal,
+		BigDecimal taxTotal, BigDecimal total, BigDecimal subtotal) {
 
 	public static Cart of() {
-		return new Cart(null, Instant.now(), null, null, BigDecimal.valueOf(0, 2));
+		return new Cart(null, Instant.now(), null, null, BigDecimal.valueOf(0, 2), BigDecimal.valueOf(0, 2),
+				BigDecimal.valueOf(0, 2), BigDecimal.valueOf(0, 2));
 	}
 
 	public Cart withTotal(BigDecimal total) {
-		return new Cart(id, createdAt, customer, salesChannel, total);
+		return new Cart(id, createdAt, customer, salesChannel, shippingTotal, taxTotal, total, subtotal);
+	}
+
+	public Cart withSubtotal(BigDecimal subtotal) {
+		return new Cart(id, createdAt, customer, salesChannel, shippingTotal, taxTotal, total, subtotal);
 	}
 }

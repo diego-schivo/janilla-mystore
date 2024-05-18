@@ -21,28 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export default class Cart {
+package com.janilla.store.storefront;
 
-	selector;
+import com.janilla.persistence.Persistence;
+import com.janilla.store.backend.Cart;
+import com.janilla.store.storefront.Nav.CartItem;
+import com.janilla.web.Handle;
 
-	listen() {
-		const e = this.selector();
-		e.querySelectorAll("form").forEach(x => x.addEventListener("submit", this.handleFormSubmit));
-		e.querySelectorAll("select").forEach(x => x.addEventListener("change", this.handleSelectChange));
-	}
+public class NavWeb {
 
-	handleFormSubmit = async event => {
-		const d = new FormData(event.currentTarget, event.submitter);
-		event.preventDefault();
-		const s = await fetch(location.pathname, {
-			method: "POST",
-			body: new URLSearchParams(d)
-		});
-		this.selector().outerHTML = await s.text();
-		this.listen();
-	}
+	public Persistence persistence;
 
-	handleSelectChange = event => {
-		event.currentTarget.form.requestSubmit();
+	@Handle(method = "GET", path = "/nav/cart-item")
+	public CartItem getCartItem() {
+		var c = persistence.getCrud(Cart.class).read(1);
+		return CartItem.of(c, persistence);
 	}
 }

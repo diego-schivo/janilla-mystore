@@ -13,15 +13,32 @@
 
 
 body,
+dd,
+dl,
+fieldset,
 h1,
+h2,
+h3,
+hr,
 p,
 ul {
+	border: 0;
 	margin: 0;
 	padding: 0;
 }
 
 body {
 	background: light-dark(rgb(255, 255, 255), rgb(24, 26, 27));
+	/*
+	color: rgb(177, 170, 160);
+	*/
+	color: rgb(232, 230, 227);
+}
+
+h1 {
+	font-size: 2rem;
+	font-weight: 500;
+	line-height: 2.5rem;
 }
 
 a {
@@ -39,6 +56,7 @@ ul {
 }
 
 table {
+	border-collapse: collapse;
 	width: 100%;
 }
 
@@ -48,17 +66,25 @@ th {
 	
 .button {
 	align-content: center;
-	background: rgb(3, 7, 18);
 	border: 0;
 	border-radius: .375rem;
-	color: rgb(255, 255, 255);
-	cursor: pointer;
 	font-size: .8125rem;
 	font-weight: 500;
 	height: 2.5rem;
 	padding: .375rem .75rem;
 	text-align: center;
 	width: 100%;
+
+	&[disabled] {
+		background: rgb(30, 32, 34);
+		color: rgb(206, 202, 195);
+	}
+	
+	&:not([disabled]) {
+		background: rgb(3, 7, 18);
+		color: rgb(255, 255, 255);
+		cursor: pointer;
+	}
 }
 
 .screen-reader {

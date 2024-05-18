@@ -1,21 +1,27 @@
-<header class="nav">
-	<nav>
-		<div>
-			<a href="#">Menu</a>
-		</div>
-		<div>
-			<a href="#">Medusa Store</a>
-		</div>
-		<div>
-			<ul>
-				<li>
-					<a href="#">Account</a>
-				</li>
-				<li class="cart-parent">
-					<a href="#">Cart (0)</a>
-					<{cartDropdown}>
-				</li>
-			</ul>
-		</div>
-	</nav>
-</header>
+<div class="nav">
+	<header>
+		<nav>
+			<section>
+				<a href="#">Menu</a>
+			</section>
+			<section>
+				<a href="/{country}">Janilla Store</a>
+			</section>
+			<section>
+				<ul>
+					<li>
+						<a href="#">Account</a>
+					</li>
+					<{cartItem}>
+				</ul>
+			</section>
+		</nav>
+	</header>
+</div>
+
+<template id="Nav-CartItem">
+	<li class="cart-item">
+		<a href="#">Cart ({dropdown.quantity})</a>
+		<{dropdown}>
+	</li>
+</template>

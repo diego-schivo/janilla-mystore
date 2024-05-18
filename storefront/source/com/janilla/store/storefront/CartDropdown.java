@@ -23,8 +23,40 @@
  */
 package com.janilla.store.storefront;
 
+import java.util.List;
+
+import com.janilla.persistence.Persistence;
+import com.janilla.reflect.Flatten;
+import com.janilla.store.backend.Cart;
+import com.janilla.store.backend.LineItem;
+import com.janilla.store.backend.Product;
+import com.janilla.store.backend.ProductVariant;
 import com.janilla.web.Render;
 
 @Render("CartDropdown.html")
-public record CartDropdown() {
+public record CartDropdown(@Flatten Cart cart, List<LineItem2> items, Integer quantity) {
+
+	public static CartDropdown of(Cart cart, Persistence persistence) {
+		List<LineItem2> ii;
+		{
+			var jj = cart != null ? persistence.getCrud(LineItem.class).filter("cart", cart.id()) : null;
+			ii = jj != null
+					? persistence.getCrud(LineItem.class).read(jj).map(x -> LineItem2.of(x, persistence)).toList()
+					: null;
+		}
+		var q = ii != null ? ii.stream().mapToInt(x -> x.item.quantity()).sum() : 0;
+		return new CartDropdown(cart, ii, q);
+	}
+
+	@Render("CartDropdown-item.html")
+	public record LineItem2(@Flatten LineItem item, ProductVariant variant, Product product) {
+
+		public static LineItem2 of(LineItem item, Persistence persistence) {
+			if (item == null)
+				return null;
+			var v = persistence.getCrud(ProductVariant.class).read(item.variant());
+			var p = persistence.getCrud(Product.class).read(item.product());
+			return new LineItem2(item, v, p);
+		}
+	}
 }

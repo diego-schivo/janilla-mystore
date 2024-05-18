@@ -25,13 +25,15 @@ package com.janilla.store.storefront;
 
 import com.janilla.frontend.RenderEngine;
 import com.janilla.frontend.Renderer;
+import com.janilla.persistence.Persistence;
 import com.janilla.web.Render;
 
 @Render("Layout.html")
-public record Layout(RenderEngine.Entry entry) implements Renderer {
+public record Layout(Nav nav, RenderEngine.Entry entry) implements Renderer {
 
-	public Nav nav() {
-		return new Nav();
+	public static Layout of(RenderEngine.Entry entry, Persistence persistence) {
+		var n = Nav.of(persistence);
+		return new Layout(n, entry);
 	}
 
 	@Override

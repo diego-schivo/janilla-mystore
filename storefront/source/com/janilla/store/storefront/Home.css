@@ -1,11 +1,12 @@
 .home {
+	margin: 0 auto;
+	max-width: 1440px;
+	padding: 6rem 1.5rem;
+
 	ul {
 		display: grid;
 		gap: 9rem 1.5rem;
 		grid-template-columns: repeat(3, 1fr);
-		margin: 0 auto;
-		max-width: 1440px;
-		padding: 0 1.5rem;
 	}
 	
 	a {
@@ -15,6 +16,7 @@
 	}
 	
 	.thumbnail {
+		align-items: center;
 		background: rgb(249, 250, 251);
 		border-radius: .5rem;
 		box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
@@ -23,11 +25,12 @@
 			rgba(3, 7, 18, 0.08) 0px 1px 2px -1px,
 			rgba(3, 7, 18, 0.04) 0px 2px 4px 0px;
 		display: flex;
-		padding: 1rem;
+		justify-content: center;
+		overflow: hidden;
 	}
 	
 	.title-parent {
-		color: rgb(75, 85, 99);
+		color: light-dark(rgb(75, 85, 99), rgb(175, 169, 158));
 		display: flex;
 		font-size: .875rem;
 		justify-content: space-between;

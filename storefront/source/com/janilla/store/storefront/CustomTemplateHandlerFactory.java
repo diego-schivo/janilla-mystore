@@ -27,11 +27,14 @@ import java.io.IOException;
 
 import com.janilla.frontend.RenderEngine;
 import com.janilla.http.HttpExchange;
+import com.janilla.persistence.Persistence;
 import com.janilla.web.TemplateHandlerFactory;
 
 public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {
 
 	static ThreadLocal<Layout> layout = new ThreadLocal<>();
+
+	public Persistence persistence;
 
 	@Override
 	protected void render(RenderEngine.Entry input, HttpExchange exchange) throws IOException {
@@ -43,7 +46,7 @@ public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {
 		var l = layout.get();
 		var n = l == null;
 		if (n) {
-			l = new Layout(input);
+			l = Layout.of(input, persistence);
 			layout.set(l);
 			input = RenderEngine.Entry.of(null, l, null);
 		}

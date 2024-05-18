@@ -1,6 +1,6 @@
 <article class="product">
 	<section class="product-info-parent">
-		<p>{collection}</p>
+		<a href="#">{collection}</a>
 		<h1>{title}</h1>
 		<p>{description}</p>
 		<ul>
@@ -29,7 +29,8 @@
 		<div class="options">
 			<{options}>
 		</div>
-		<h2>${variant.price.amount}</h2>
+		<hr />
+		<{price}>
 		<{addToCart}>
 	</form>
 </template>
@@ -49,6 +50,14 @@
 		<input id="option-{option}-{id}" type="radio" name="options[0].value" value="{id}" data-{checked} class="screen-reader" />
 		<label for="option-{option}-{id}">{value}</label>
 	</li>
+</template>
+
+<template id="Product-price-from">
+	<h2>From ${}</h2>
+</template>
+
+<template id="Product-price">
+	<h2>${}</h2>
 </template>
 
 <template id="Product-addToCart-disabled">

@@ -23,12 +23,25 @@
  */
 package com.janilla.store.storefront;
 
+import com.janilla.persistence.Persistence;
+import com.janilla.store.backend.Cart;
 import com.janilla.web.Render;
 
 @Render("Nav.html")
-public record Nav() {
+public record Nav(CartItem cartItem) {
 
-	public CartDropdown cartDropdown() {
-		return new CartDropdown();
+	public static Nav of(Persistence persistence) {
+		var c = persistence.getCrud(Cart.class).read(1);
+		var d = CartItem.of(c, persistence);
+		return new Nav(d);
+	}
+
+	@Render("Nav-CartItem.html")
+	public record CartItem(CartDropdown dropdown) {
+
+		public static CartItem of(Cart cart, Persistence persistence) {
+			var d = CartDropdown.of(cart, persistence);
+			return new CartItem(d);
+		}
 	}
 }

@@ -21,22 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import CartDropdown from "./CartDropdown.js";
+
 export default class Nav {
 
 	selector;
+	
+	cartDropdown;
 
 	listen() {
-		// this.selector().querySelector(".cart-parent > a").addEventListener("hover", this.handleFormSubmit);
+		if (!this.cartDropdown) {
+			const d = new CartDropdown();
+			d.selector = () => this.selector().querySelector(".cart-dropdown");
+			this.cartDropdown = d;
+		}
+		addEventListener("cartchange", this.handleCartChange);
+		this.cartDropdown.listen();
 	}
 
-	/*
-	handleFormSubmit = async event => {
-		event.preventDefault();
-		const s = await fetch(location.pathname, {
-			method: "POST"
-		});
-		this.selector().outerHTML = await s.text();
+	handleCartChange = async () => {
+		const s = await fetch("/nav/cart-item");
+		const e = this.selector();
+		e.querySelector(".cart-item").outerHTML = await s.text();
 		this.listen();
+
+		const f = this.cartDropdown.selector();
+		f.classList.add("visible");
+		setTimeout(() => f.classList.remove("visible"), 5000);
 	}
-	*/
 }

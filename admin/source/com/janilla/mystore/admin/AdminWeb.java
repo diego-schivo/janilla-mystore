@@ -21,11 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.web.Handle;
+import com.janilla.web.Render;
 
-	opens com.janilla.mystore.storefront;
+public class AdminWeb {
 
-	requires transitive com.janilla.mystore.backend;
+	@Handle(method = "GET", path = "/admin")
+	public @Render Object getPage() {
+		return null;
+	}
 }

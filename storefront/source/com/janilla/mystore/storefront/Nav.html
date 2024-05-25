@@ -1,0 +1,27 @@
+<div class="nav">
+	<header>
+		<nav>
+			<section>
+				<a href="#">Menu</a>
+			</section>
+			<section>
+				<a href="/{country}">Janilla MyStore</a>
+			</section>
+			<section>
+				<ul>
+					<li>
+						<a href="#">Account</a>
+					</li>
+					<{cartItem}>
+				</ul>
+			</section>
+		</nav>
+	</header>
+</div>
+
+<template id="Nav-CartItem">
+	<li class="cart-item">
+		<a href="#">Cart ({dropdown.quantity})</a>
+		<{dropdown}>
+	</li>
+</template>

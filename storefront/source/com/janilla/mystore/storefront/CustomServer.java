@@ -21,11 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.storefront;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.http.HttpExchange;
+import com.janilla.http.HttpRequest;
+import com.janilla.http.HttpResponse;
+import com.janilla.http.HttpServer;
+import com.janilla.reflect.Factory;
 
-	opens com.janilla.mystore.storefront;
+public class CustomServer extends HttpServer {
 
-	requires transitive com.janilla.mystore.backend;
+	public Factory factory;
+
+	@Override
+	protected HttpExchange buildExchange(HttpRequest request, HttpResponse response) {
+		var e = factory.create(HttpExchange.class);
+		e.setRequest(request);
+		e.setResponse(response);
+		return e;
+	}
 }

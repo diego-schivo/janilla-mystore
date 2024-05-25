@@ -21,11 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.backend;
 
-	exports com.janilla.mystore.storefront;
+import java.math.BigDecimal;
+import java.time.Instant;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.persistence.Index;
+import com.janilla.persistence.Store;
 
-	requires transitive com.janilla.mystore.backend;
+@Store
+public record MoneyAmount(Long id, Instant createdAt, String currencyCode, BigDecimal amount, @Index Long variant) {
+
+	public static MoneyAmount of(String currencyCode, BigDecimal amount) {
+		return new MoneyAmount(null, Instant.now(), currencyCode, amount, null);
+	}
+
+	public MoneyAmount withVariant(Long variant) {
+		return new MoneyAmount(id, createdAt, currencyCode, amount, variant);
+	}
 }

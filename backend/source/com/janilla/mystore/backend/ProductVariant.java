@@ -21,11 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.backend;
 
-	exports com.janilla.mystore.storefront;
+import java.time.Instant;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.persistence.Index;
+import com.janilla.persistence.Store;
 
-	requires transitive com.janilla.mystore.backend;
+@Store
+public record ProductVariant(Long id, Instant createdAt, String title, @Index Long product, String sku, String ean,
+		Integer inventoryQuantity) {
+
+	public static ProductVariant of(Product product) {
+		return new ProductVariant(null, Instant.now(), null, product.id(), null, null, 0);
+	}
+
+	public ProductVariant withTitle(String title) {
+		return new ProductVariant(id, createdAt, title, product, sku, ean, inventoryQuantity);
+	}
+
+	public ProductVariant withInventoryQuantity(Integer inventoryQuantity) {
+		return new ProductVariant(id, createdAt, title, product, sku, ean, inventoryQuantity);
+	}
 }

@@ -21,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.web.Render;
 
-	opens com.janilla.mystore.storefront;
-
-	requires transitive com.janilla.mystore.backend;
+@Render("Sidebar.html")
+public record Sidebar() {
 }

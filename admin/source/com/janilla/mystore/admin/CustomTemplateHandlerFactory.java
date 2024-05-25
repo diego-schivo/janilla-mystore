@@ -21,11 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.frontend.RenderEngine;
+import com.janilla.http.HttpExchange;
+import com.janilla.web.TemplateHandlerFactory;
 
-	opens com.janilla.mystore.storefront;
+public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {
 
-	requires transitive com.janilla.mystore.backend;
+	static ThreadLocal<Layout> layout = new ThreadLocal<>();
+
+	@Override
+	protected void render(RenderEngine.Entry input, HttpExchange exchange) {
+		var a = exchange.getRequest().getHeaders().get("Accept");
+		if (a.equals("*/*")) {
+			super.render(input, exchange);
+			return;
+		}
+		var l = layout.get();
+		var n = l == null;
+		if (n) {
+			l = new Layout(input, new Sidebar());
+			layout.set(l);
+			input = RenderEngine.Entry.of(null, l, null);
+		}
+		try {
+			super.render(input, exchange);
+		} finally {
+			if (n)
+				layout.remove();
+		}
+	}
 }

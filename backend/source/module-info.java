@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.store.backend {
+module com.janilla.mystore.backend {
 
-	exports com.janilla.store.backend;
+	exports com.janilla.mystore.backend;
 
-	opens com.janilla.store.backend;
+	opens com.janilla.mystore.backend;
 
 	requires transitive com.janilla;
 }

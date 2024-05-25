@@ -21,11 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.storefront;
 
-	exports com.janilla.mystore.storefront;
+import java.util.Properties;
+import java.util.regex.Pattern;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.http.HttpExchange;
+import com.janilla.web.HandleException;
+import com.janilla.web.MethodHandlerFactory;
+import com.janilla.web.MethodInvocation;
 
-	requires transitive com.janilla.mystore.backend;
+public class CustomMethodHandlerFactory extends MethodHandlerFactory {
+
+	public Properties configuration;
+
+	static Pattern putPath = Pattern.compile("(/[a-z]{2})?/products/([\\w-]+)/actions");
+
+	@Override
+	protected void handle(MethodInvocation invocation, HttpExchange exchange) {
+		if (Boolean.parseBoolean(configuration.getProperty("mystore.live-demo"))) {
+			var q = exchange.getRequest();
+			switch (q.getMethod().name()) {
+			case "GET":
+				break;
+			case "PUT":
+				if (putPath.matcher(q.getURI().getPath()).matches())
+					;
+				else
+					throw new HandleException(new MethodBlockedException());
+				break;
+			default:
+				throw new HandleException(new MethodBlockedException());
+			}
+		}
+		super.handle(invocation, exchange);
+	}
 }

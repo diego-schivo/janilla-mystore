@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.storefront;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.http.HttpExchange;
 
-	opens com.janilla.mystore.storefront;
+public class CustomExchange extends HttpExchange {
 
-	requires transitive com.janilla.mystore.backend;
+	public String country;
 }

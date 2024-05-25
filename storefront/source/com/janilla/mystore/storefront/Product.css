@@ -1,0 +1,90 @@
+.product {
+	align-items: start;
+	display: flex;
+	gap: 4rem;
+	margin: 0 auto;
+	max-width: 1440px;
+	padding: 1.5rem;
+	position: relative;
+	
+	> :not(.image-gallery-parent) {
+		flex: 0 0 300px;
+		position: sticky;
+		top: 12rem;
+	}
+	
+	.product-info-parent {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	p {
+		color: rgb(177, 170, 160);
+		font-size: .875rem;
+		line-height: 1.5rem;
+	}
+	
+	.image-gallery-parent {
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+		
+		li {
+			align-items: center;
+			aspect-ratio: 29 / 34;
+			border-radius: .5rem;
+			display: flex;
+			justify-content: center;
+			overflow: hidden;
+		}
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: .5rem;
+	}
+
+	hr {
+		border-bottom: 1px solid light-dark(rgb(54, 59, 61), rgb(54, 59, 61));
+		margin-top: .5rem;
+	}
+
+	.options {
+		font-size: .75rem;
+		line-height: 1.25rem;
+
+		legend {
+			font-size: .875rem;
+			margin-bottom: .75rem;
+		}
+
+		ul {
+			display: flex;
+			gap: .5rem;
+		}
+
+		li {
+			background: light-dark(rgb(249, 250, 251), rgb(27, 29, 30));
+			display: flex;
+			flex: 1 1 0;
+		}
+		
+		label {
+			border: 1px solid light-dark(rgb(229, 231, 235), rgb(54, 59, 61));
+			border-radius: 8px;
+			cursor: pointer;
+			height: 2.5rem;
+			padding: .5rem;
+			text-align: center;
+			width: 100%;
+		}
+
+		:checked + label {
+			border-color: rgb(7, 64, 156);
+		}
+	}
+}

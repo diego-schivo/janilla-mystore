@@ -21,11 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.persistence.Persistence;
+import com.janilla.mystore.backend.Order;
+import com.janilla.web.Handle;
+import com.janilla.web.Render;
 
-	opens com.janilla.mystore.storefront;
+public class OrderWeb {
 
-	requires transitive com.janilla.mystore.backend;
+	public Persistence persistence;
+
+	@Handle(method = "GET", path = "/admin/orders")
+	public Orders getOrders() {
+		var ii = persistence.crud(Order.class).list();
+		var oo = persistence.crud(Order.class).read(ii).toList();
+		return new Orders(oo);
+	}
+
+	@Handle(method = "GET", path = "/admin/orders/(\\d+)")
+	public @Render("Order.html") Order getOrder(Long id) {
+		var o = persistence.crud(Order.class).read(id);
+		return o;
+	}
 }

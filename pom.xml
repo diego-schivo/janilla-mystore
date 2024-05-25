@@ -3,31 +3,31 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.janilla</groupId>
-	<artifactId>janilla-store</artifactId>
+	<artifactId>janilla-mystore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>com.janilla</groupId>
 			<artifactId>janilla</artifactId>
-			<version>0.13.0</version>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>com.janilla</groupId>
-				<artifactId>janilla-store-admin</artifactId>
+				<artifactId>janilla-mystore-admin</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.janilla</groupId>
-				<artifactId>janilla-store-backend</artifactId>
+				<artifactId>janilla-mystore-backend</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.janilla</groupId>
-				<artifactId>janilla-store-storefront</artifactId>
+				<artifactId>janilla-mystore-storefront</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
@@ -57,7 +57,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.janilla.store.full.StoreFullApp</mainClass>
+					<mainClass>com.janilla.mystore.full.StoreFullApp</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -66,7 +66,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.3.0</version>
 					<executions>
 						<execution>
 							<goals>
@@ -78,9 +78,9 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<name>Janilla Store</name>
-	<description>Sample Janilla reference application.</description>
-	<url>https://github.com/diego-schivo/janilla-store</url>
+	<name>Janilla MyStore</name>
+	<description>Medusa MyStore (partial) porting to Janilla</description>
+	<url>https://github.com/diego-schivo/janilla-mystore</url>
 	<licenses>
 		<license>
 			<name>MIT</name>
@@ -96,10 +96,10 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:git://github.com/diego-schivo/janilla-store.git</connection>
+		<connection>scm:git:git://github.com/diego-schivo/janilla-mystore.git</connection>
 		<developerConnection>
-			scm:git:ssh://git@github.com/diego-schivo/janilla-store.git</developerConnection>
-		<url>https://github.com/diego-schivo/janilla-store</url>
+			scm:git:ssh://git@github.com/diego-schivo/janilla-mystore.git</developerConnection>
+		<url>https://github.com/diego-schivo/janilla-mystore</url>
 		<tag>HEAD</tag>
 	</scm>
 </project>

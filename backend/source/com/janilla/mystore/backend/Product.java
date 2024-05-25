@@ -21,11 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.backend;
 
-	exports com.janilla.mystore.storefront;
+import java.net.URI;
+import java.time.Instant;
+import java.util.List;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.persistence.Index;
+import com.janilla.persistence.Store;
 
-	requires transitive com.janilla.mystore.backend;
+@Store
+public record Product(Long id, Instant createdAt, String title, String subtitle, String description,
+		@Index String handle, String status, List<URI> images, URI thumbnail, Boolean discountable, String metadata,
+		String collection, String type, Long salesChannel) {
 }

@@ -21,11 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.storefront;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.web.Error;
+import com.janilla.web.Render;
 
-	opens com.janilla.mystore.storefront;
+@Error(code = 403, text = "Forbidden")
+@Render("""
+		{message}
+		""")
+public class MethodBlockedException extends RuntimeException {
 
-	requires transitive com.janilla.mystore.backend;
+	private static final long serialVersionUID = 5032128396681286604L;
+
+	public MethodBlockedException() {
+		super("The requested action is disabled on this public server: please set up and run the application locally");
+	}
 }

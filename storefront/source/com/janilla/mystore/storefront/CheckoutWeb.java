@@ -21,11 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.storefront;
 
-	exports com.janilla.mystore.storefront;
+import java.util.Arrays;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.persistence.Persistence;
+import com.janilla.mystore.backend.Cart;
+import com.janilla.mystore.backend.LineItem;
+import com.janilla.mystore.backend.Order;
+import com.janilla.web.Handle;
+import com.janilla.web.Render;
 
-	requires transitive com.janilla.mystore.backend;
+public class CheckoutWeb {
+
+	public Persistence persistence;
+
+	@Handle(method = "GET", path = "/checkout")
+	public @Render("Checkout.html") Object getCheckout() {
+		return "";
+	}
+
+	@Handle(method = "POST", path = "/checkout")
+	public @Render("Checkout-order.html") Order placeOrder() {
+		var c = persistence.crud(Cart.class).delete(1);
+		var o = persistence.crud(Order.class).create(Order.of());
+//		List<LineItem> ii;
+		{
+			var jj = persistence.crud(LineItem.class).filter("cart", c.id());
+			Arrays.stream(jj)
+					.mapToObj(
+							x -> persistence.crud(LineItem.class).update(x, y -> y.withCart(null).withOrder(o.id())))
+					.toList();
+		}
+		return o;
+	}
 }

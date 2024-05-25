@@ -21,11 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import java.util.List;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.mystore.backend.Order;
+import com.janilla.web.Render;
 
-	requires transitive com.janilla.mystore.backend;
+@Render("Orders.html")
+public record Orders(List<@Render("Orders-item.html") Order> items) {
 }

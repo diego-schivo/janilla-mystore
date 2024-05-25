@@ -21,11 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.backend;
 
-	exports com.janilla.mystore.storefront;
+import java.math.BigDecimal;
+import java.time.Instant;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.persistence.Store;
 
-	requires transitive com.janilla.mystore.backend;
+@Store
+public record Cart(Long id, Instant createdAt, Long customer, Long salesChannel, BigDecimal shippingTotal,
+		BigDecimal taxTotal, BigDecimal total, BigDecimal subtotal) {
+
+	public static Cart of() {
+		return new Cart(null, Instant.now(), null, null, BigDecimal.valueOf(0, 2), BigDecimal.valueOf(0, 2),
+				BigDecimal.valueOf(0, 2), BigDecimal.valueOf(0, 2));
+	}
+
+	public Cart withTotal(BigDecimal total) {
+		return new Cart(id, createdAt, customer, salesChannel, shippingTotal, taxTotal, total, subtotal);
+	}
+
+	public Cart withSubtotal(BigDecimal subtotal) {
+		return new Cart(id, createdAt, customer, salesChannel, shippingTotal, taxTotal, total, subtotal);
+	}
 }

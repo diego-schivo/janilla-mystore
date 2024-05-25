@@ -21,11 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.storefront;
 
-	exports com.janilla.mystore.storefront;
+import java.util.stream.Stream;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.web.ApplicationHandlerBuilder;
+import com.janilla.web.WebHandlerFactory;
 
-	requires transitive com.janilla.mystore.backend;
+public class CustomHandlerBuilder extends ApplicationHandlerBuilder {
+
+	@Override
+	protected Stream<WebHandlerFactory> buildFactories() {
+		return Stream.concat(Stream.of(buildLocaleHandlerFactory()), super.buildFactories());
+	}
+
+	protected CountryHandlerFactory buildLocaleHandlerFactory() {
+		return factory.create(CountryHandlerFactory.class);
+	}
 }

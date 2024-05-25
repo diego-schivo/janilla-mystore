@@ -21,11 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import java.util.Properties;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.http.HttpExchange;
+import com.janilla.web.HandleException;
+import com.janilla.web.MethodHandlerFactory;
+import com.janilla.web.MethodInvocation;
 
-	requires transitive com.janilla.mystore.backend;
+public class CustomMethodHandlerFactory extends MethodHandlerFactory {
+
+	public Properties configuration;
+
+	@Override
+	protected void handle(MethodInvocation invocation, HttpExchange exchange) {
+		if (Boolean.parseBoolean(configuration.getProperty("mystore.live-demo"))) {
+			var q = exchange.getRequest();
+			switch (q.getMethod().name()) {
+			case "GET":
+				break;
+			default:
+				throw new HandleException(new MethodBlockedException());
+			}
+		}
+		super.handle(invocation, exchange);
+	}
 }

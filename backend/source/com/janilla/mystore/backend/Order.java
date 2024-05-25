@@ -21,11 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.backend;
 
-	exports com.janilla.mystore.storefront;
+import java.math.BigDecimal;
+import java.time.Instant;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.persistence.Store;
 
-	requires transitive com.janilla.mystore.backend;
+@Store
+public record Order(Long id, Instant createdAt, String fulfillmentStatus, String paymentStatus, Long customer,
+		Long currency, Long salesChannel, BigDecimal total) {
+
+	public static Order of() {
+		return new Order(null, Instant.now(), null, null, null, null, null, BigDecimal.valueOf(0, 2));
+	}
 }

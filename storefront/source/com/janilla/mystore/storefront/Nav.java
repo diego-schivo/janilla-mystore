@@ -21,11 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.storefront;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.persistence.Persistence;
+import com.janilla.mystore.backend.Cart;
+import com.janilla.web.Render;
 
-	opens com.janilla.mystore.storefront;
+@Render("Nav.html")
+public record Nav(CartItem cartItem) {
 
-	requires transitive com.janilla.mystore.backend;
+	public static Nav of(Persistence persistence) {
+		var c = persistence.crud(Cart.class).read(1);
+		var d = CartItem.of(c, persistence);
+		return new Nav(d);
+	}
+
+	@Render("Nav-CartItem.html")
+	public record CartItem(CartDropdown dropdown) {
+
+		public static CartItem of(Cart cart, Persistence persistence) {
+			var d = CartDropdown.of(cart, persistence);
+			return new CartItem(d);
+		}
+	}
 }

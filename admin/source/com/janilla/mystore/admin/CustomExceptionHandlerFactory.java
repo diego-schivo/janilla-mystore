@@ -21,11 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.frontend.RenderEngine;
+import com.janilla.http.HttpExchange;
+import com.janilla.web.Error;
+import com.janilla.web.ExceptionHandlerFactory;
+import com.janilla.web.WebHandlerFactory;
 
-	opens com.janilla.mystore.storefront;
+public class CustomExceptionHandlerFactory extends ExceptionHandlerFactory {
 
-	requires transitive com.janilla.mystore.backend;
+	public WebHandlerFactory mainFactory;
+
+	@Override
+	protected void handle(Error error, HttpExchange exchange) {
+		super.handle(error, exchange);
+
+		if (exchange.getException() instanceof MethodBlockedException e) {
+			var o = RenderEngine.Entry.of(null, e, null);
+			mainFactory.createHandler(o, exchange).handle(exchange);
+		}
+	}
 }

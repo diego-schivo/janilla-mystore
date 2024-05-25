@@ -21,11 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+export default class Product {
 
-	exports com.janilla.mystore.storefront;
+	selector;
 
-	opens com.janilla.mystore.storefront;
+	listen() {
+		const e = this.selector();
+		e.querySelectorAll("input").forEach(x => x.addEventListener("change", this.handleInputChange));
+		e.querySelector("form").addEventListener("submit", this.handleFormSubmit);
+	}
 
-	requires transitive com.janilla.mystore.backend;
+	handleInputChange = async event => {
+		const f = event.target.form;
+		const s = await fetch(`${location.pathname}/actions`, {
+			method: "PUT",
+			body: new URLSearchParams(new FormData(f))
+		});
+		f.closest("section").innerHTML = await s.text();
+		this.listen();
+	}
+
+	handleFormSubmit = async event => {
+		const d = new FormData(event.currentTarget, event.submitter);
+		event.preventDefault();
+		const s = await fetch(location.pathname, {
+			method: "POST",
+			body: new URLSearchParams(d)
+		});
+		s.ok ? dispatchEvent(new CustomEvent("cartchange")) : alert(await s.text());
+	}
 }

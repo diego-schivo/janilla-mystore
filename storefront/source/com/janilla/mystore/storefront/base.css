@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("/fonts/fontawesome/css/fontawesome.min.css");
+@import url("/fonts/fontawesome/css/brands.min.css");
+@import url("/fonts/fontawesome/css/solid.min.css");
+
+* {
+	box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+
+body,
+dd,
+dl,
+fieldset,
+h1,
+h2,
+h3,
+hr,
+p,
+ul {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: light-dark(rgb(255, 255, 255), rgb(24, 26, 27));
+	/*
+	color: rgb(177, 170, 160);
+	*/
+	color: light-dark(rgb(75, 85, 99), rgb(232, 230, 227));
+}
+
+h1 {
+	font-size: 2rem;
+	font-weight: 500;
+	line-height: 2.5rem;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+ul {
+	list-style: none;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th {
+	text-align: left;
+}
+	
+.button {
+	align-content: center;
+	border: 0;
+	border-radius: .375rem;
+	font-size: .8125rem;
+	font-weight: 500;
+	height: 2.5rem;
+	padding: .375rem .75rem;
+	text-align: center;
+	width: 100%;
+
+	&[disabled] {
+		background: light-dark(rgb(243, 244, 246), rgb(30, 32, 34));
+		color: light-dark(rgb(209, 213, 219), rgb(206, 202, 195));
+	}
+	
+	&:not([disabled]) {
+		background: rgb(3, 7, 18);
+		color: rgb(255, 255, 255);
+		cursor: pointer;
+	}
+}
+
+.screen-reader {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}

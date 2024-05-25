@@ -21,11 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.backend;
 
-	exports com.janilla.mystore.storefront;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Properties;
 
-	opens com.janilla.mystore.storefront;
+import com.janilla.persistence.ApplicationPersistenceBuilder;
+import com.janilla.persistence.Persistence;
 
-	requires transitive com.janilla.mystore.backend;
+public class CustomPersistenceBuilder extends ApplicationPersistenceBuilder {
+
+	public Properties configuration;
+
+	@Override
+	public Persistence build() {
+		if (file == null) {
+			var p = configuration.getProperty("mystore.database.file");
+			if (p.startsWith("~"))
+				p = System.getProperty("user.home") + p.substring(1);
+			file = Path.of(p);
+		}
+		var e = Files.exists(file);
+		var p = (CustomPersistence) super.build();
+		if (!e)
+			p.seed();
+		return p;
+	}
 }

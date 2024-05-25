@@ -21,11 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module com.janilla.mystore.storefront {
+package com.janilla.mystore.admin;
 
-	exports com.janilla.mystore.storefront;
+import com.janilla.frontend.RenderEngine;
+import com.janilla.frontend.RenderParticipant;
+import com.janilla.web.Render;
 
-	opens com.janilla.mystore.storefront;
+@Render("Layout.html")
+public record Layout(RenderEngine.Entry entry, Sidebar sidebar) implements RenderParticipant {
 
-	requires transitive com.janilla.mystore.backend;
+	@Override
+	public boolean render(RenderEngine engine) {
+		record A(Layout layout, Object content) {
+		}
+		return engine.match(A.class, (i, o) -> {
+			o.setValue(entry.getValue());
+			o.setType(entry.getType());
+		});
+	}
 }

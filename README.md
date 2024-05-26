@@ -24,6 +24,8 @@ Then open a browser and navigate to <http://localhost:8000/> (the Admin port is 
 
 ### Set up the project in an IDE
 
+[Step-by-step Video Tutorial](https://youtu.be/uzv817pZzIc) available on our [YouTube Channel](https://www.youtube.com/@janilla).
+
 So far the project has been developed with [Eclipse IDE](https://eclipseide.org/):
 
 1. download the [Eclipse Installer](https://www.eclipse.org/downloads/packages/installer)

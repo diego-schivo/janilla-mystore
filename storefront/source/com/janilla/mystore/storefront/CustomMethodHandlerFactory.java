@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 import com.janilla.http.HttpExchange;
 import com.janilla.web.HandleException;
 import com.janilla.web.MethodHandlerFactory;
-import com.janilla.web.MethodInvocation;
 
 public class CustomMethodHandlerFactory extends MethodHandlerFactory {
 
@@ -38,7 +37,7 @@ public class CustomMethodHandlerFactory extends MethodHandlerFactory {
 	static Pattern putPath = Pattern.compile("(/[a-z]{2})?/products/([\\w-]+)/actions");
 
 	@Override
-	protected void handle(MethodInvocation invocation, HttpExchange exchange) {
+	protected void handle(Invocation invocation, HttpExchange exchange) {
 		if (Boolean.parseBoolean(configuration.getProperty("mystore.live-demo"))) {
 			var q = exchange.getRequest();
 			switch (q.getMethod().name()) {

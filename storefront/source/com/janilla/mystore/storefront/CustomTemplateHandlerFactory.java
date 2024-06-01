@@ -30,29 +30,16 @@ import com.janilla.web.TemplateHandlerFactory;
 
 public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {
 
-	static ThreadLocal<Layout> layout = new ThreadLocal<>();
-
 	public Persistence persistence;
 
 	@Override
 	protected void render(RenderEngine.Entry input, HttpExchange exchange) {
+		var e = (CustomExchange) exchange;
 		var a = exchange.getRequest().getHeaders().get("Accept");
-		if (a.equals("*/*")) {
-			super.render(input, exchange);
-			return;
+		if (e.layout == null && !a.equals("*/*")) {
+			e.layout = Layout.of(input, persistence);
+			input = RenderEngine.Entry.of(null, e.layout, null);
 		}
-		var l = layout.get();
-		var n = l == null;
-		if (n) {
-			l = Layout.of(input, persistence);
-			layout.set(l);
-			input = RenderEngine.Entry.of(null, l, null);
-		}
-		try {
-			super.render(input, exchange);
-		} finally {
-			if (n)
-				layout.remove();
-		}
+		super.render(input, exchange);
 	}
 }

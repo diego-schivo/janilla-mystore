@@ -26,6 +26,8 @@ package com.janilla.mystore.storefront;
 import com.janilla.http.HttpExchange;
 
 public class CustomExchange extends HttpExchange {
-
+	
 	public String country;
+	
+	public Layout layout;
 }

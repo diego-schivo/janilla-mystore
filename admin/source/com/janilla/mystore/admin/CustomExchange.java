@@ -23,20 +23,9 @@
  */
 package com.janilla.mystore.admin;
 
-import com.janilla.frontend.RenderEngine;
 import com.janilla.http.HttpExchange;
-import com.janilla.web.TemplateHandlerFactory;
 
-public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {
+public class CustomExchange extends HttpExchange {
 
-	@Override
-	protected void render(RenderEngine.Entry input, HttpExchange exchange) {
-		var e = (CustomExchange) exchange;
-		var a = exchange.getRequest().getHeaders().get("Accept");
-		if (e.layout == null && !a.equals("*/*")) {
-			e.layout = new Layout(input, new Sidebar());
-			input = RenderEngine.Entry.of(null, e.layout, null);
-		}
-		super.render(input, exchange);
-	}
+	public Layout layout;
 }

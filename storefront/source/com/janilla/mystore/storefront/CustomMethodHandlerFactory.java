@@ -44,7 +44,7 @@ public class CustomMethodHandlerFactory extends MethodHandlerFactory {
 			case "GET":
 				break;
 			case "PUT":
-				if (putPath.matcher(q.getURI().getPath()).matches())
+				if (putPath.matcher(q.getUri().getPath()).matches())
 					;
 				else
 					throw new HandleException(new MethodBlockedException());

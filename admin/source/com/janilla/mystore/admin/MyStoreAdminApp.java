@@ -25,11 +25,12 @@ package com.janilla.mystore.admin;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.InetSocketAddress;
 import java.util.Properties;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import com.janilla.http.HttpServer;
+import com.janilla.net.Server;
 import com.janilla.persistence.ApplicationPersistenceBuilder;
 import com.janilla.persistence.Persistence;
 import com.janilla.reflect.Factory;
@@ -52,10 +53,10 @@ public class MyStoreAdminApp {
 		}
 		a.getPersistence();
 
-		var s = a.getFactory().create(HttpServer.class);
-		s.setPort(Integer.parseInt(a.configuration.getProperty("mystore.server.port")));
+		var s = a.getFactory().create(Server.class);
+		s.setAddress(new InetSocketAddress(Integer.parseInt(a.configuration.getProperty("mystore.server.port"))));
 		s.setHandler(a.getHandler());
-		s.run();
+		s.serve();
 	}
 
 	public Properties configuration;
@@ -73,7 +74,7 @@ public class MyStoreAdminApp {
 		return b.build();
 	});
 
-	private Supplier<HttpServer.Handler> handler = Lazy.of(() -> {
+	private Supplier<Server.Handler> handler = Lazy.of(() -> {
 		var b = getFactory().create(ApplicationHandlerBuilder.class);
 		return b.build();
 	});
@@ -90,7 +91,7 @@ public class MyStoreAdminApp {
 		return persistence.get();
 	}
 
-	public HttpServer.Handler getHandler() {
+	public Server.Handler getHandler() {
 		return handler.get();
 	}
 }

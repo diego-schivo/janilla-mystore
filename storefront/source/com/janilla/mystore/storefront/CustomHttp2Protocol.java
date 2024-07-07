@@ -23,25 +23,17 @@
  */
 package com.janilla.mystore.storefront;
 
-import com.janilla.frontend.RenderEngine;
-import com.janilla.http.HttpExchange;
-import com.janilla.media.HeaderField;
-import com.janilla.persistence.Persistence;
-import com.janilla.web.TemplateHandlerFactory;
+import com.janilla.http.HttpRequest;
+import com.janilla.http2.Http2Exchange;
+import com.janilla.http2.Http2Protocol;
+import com.janilla.reflect.Factory;
 
-public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {
+public class CustomHttp2Protocol extends Http2Protocol {
 
-	public Persistence persistence;
+	public Factory factory;
 
 	@Override
-	protected void render(RenderEngine.Entry input, HttpExchange exchange) {
-		var e = (CustomExchange) exchange;
-		var a = exchange.getRequest().getHeaders().stream().filter(x -> x.name().equals("Accept"))
-				.map(HeaderField::value).findFirst().orElse(null);
-		if (e.layout == null && !a.equals("*/*")) {
-			e.layout = Layout.of(input, persistence);
-			input = RenderEngine.Entry.of(null, e.layout, null);
-		}
-		super.render(input, exchange);
+	protected Http2Exchange createExchange(HttpRequest request) {
+		return factory.create(Http2Exchange.class);
 	}
 }

@@ -25,7 +25,6 @@ package com.janilla.mystore.storefront;
 
 import com.janilla.persistence.Persistence;
 import com.janilla.mystore.backend.Cart;
-import com.janilla.mystore.storefront.Nav.CartItem;
 import com.janilla.web.Handle;
 
 public class NavWeb {
@@ -33,8 +32,8 @@ public class NavWeb {
 	public Persistence persistence;
 
 	@Handle(method = "GET", path = "/nav/cart-item")
-	public CartItem getCartItem() {
+	public Nav.CartItem getCartItem() {
 		var c = persistence.crud(Cart.class).read(1);
-		return CartItem.of(c, persistence);
+		return Nav.CartItem.of(c, persistence);
 	}
 }

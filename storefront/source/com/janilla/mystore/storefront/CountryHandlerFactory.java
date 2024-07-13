@@ -31,9 +31,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.janilla.http.HttpExchange;
+import com.janilla.http.HttpHandler;
 import com.janilla.http.HttpRequest;
 import com.janilla.media.HeaderField;
-import com.janilla.net.Server;
 import com.janilla.web.WebHandlerFactory;
 
 public class CountryHandlerFactory implements WebHandlerFactory {
@@ -44,7 +44,7 @@ public class CountryHandlerFactory implements WebHandlerFactory {
 	public WebHandlerFactory mainFactory;
 
 	@Override
-	public Server.Handler createHandler(Object object, HttpExchange exchange) {
+	public HttpHandler createHandler(Object object, HttpExchange exchange) {
 		if (object == null)
 			return null;
 		switch (object) {
@@ -80,14 +80,14 @@ public class CountryHandlerFactory implements WebHandlerFactory {
 		}
 	}
 
-	protected Server.Handler forward(HttpRequest request) {
+	protected HttpHandler forward(HttpRequest request) {
 		return ex -> {
 			var h = mainFactory.createHandler(request, (HttpExchange) ex);
 			return h != null && h.handle(ex);
 		};
 	}
 
-	protected Server.Handler redirect(String p) {
+	protected HttpHandler redirect(String p) {
 		String l;
 		{
 			var b = new StringBuilder();
@@ -103,8 +103,8 @@ public class CountryHandlerFactory implements WebHandlerFactory {
 			var rs = ((HttpExchange) ex).getResponse();
 //			rs.setStatus(new Status(302, "Found"));
 			rs.setStatus(302);
-			rs.getHeaders().add(new HeaderField("Cache-Control", "no-cache"));
-			rs.getHeaders().add(new HeaderField("Location", l));
+			rs.getHeaders().add(new HeaderField("cache-control", "no-cache"));
+			rs.getHeaders().add(new HeaderField("location", l));
 			return true;
 		};
 	}

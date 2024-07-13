@@ -41,7 +41,6 @@ import com.janilla.mystore.backend.Product;
 import com.janilla.mystore.backend.ProductOption;
 import com.janilla.mystore.backend.ProductOptionValue;
 import com.janilla.mystore.backend.ProductVariant;
-import com.janilla.mystore.storefront.Nav.CartItem;
 import com.janilla.web.Handle;
 import com.janilla.web.Bind;
 import com.janilla.web.Render;
@@ -69,7 +68,7 @@ public class ProductWeb {
 	}
 
 	@Handle(method = "POST", path = "/products/([\\w-]+)")
-	public CartItem addToCart(String handle, @Bind("variant") Long variant) {
+	public Nav.CartItem addToCart(String handle, @Bind("variant") Long variant) {
 		var v = persistence.crud(ProductVariant.class).read(variant);
 		var c = persistence.crud(Cart.class).read(1);
 		if (c == null)
@@ -90,7 +89,7 @@ public class ProductWeb {
 
 		c = persistence.crud(Cart.class).update(c.id(),
 				x -> x.withTotal(x.total().add(a.i.unitPrice())).withSubtotal(x.subtotal().add(a.i.unitPrice())));
-		return CartItem.of(c, persistence);
+		return Nav.CartItem.of(c, persistence);
 	}
 
 	public record Select(List<Map.Entry<Long, Long>> options) {

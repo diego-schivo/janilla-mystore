@@ -30,6 +30,7 @@ import java.util.Properties;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.janilla.http.HttpHandler;
 import com.janilla.net.Server;
 import com.janilla.persistence.ApplicationPersistenceBuilder;
 import com.janilla.persistence.Persistence;
@@ -55,7 +56,7 @@ public class MyStoreAdminApp {
 
 		var s = a.getFactory().create(Server.class);
 		s.setAddress(new InetSocketAddress(Integer.parseInt(a.configuration.getProperty("mystore.server.port"))));
-		s.setHandler(a.getHandler());
+		// s.setHandler(a.getHandler());
 		s.serve();
 	}
 
@@ -74,7 +75,7 @@ public class MyStoreAdminApp {
 		return b.build();
 	});
 
-	private Supplier<Server.Handler> handler = Lazy.of(() -> {
+	private Supplier<HttpHandler> handler = Lazy.of(() -> {
 		var b = getFactory().create(ApplicationHandlerBuilder.class);
 		return b.build();
 	});
@@ -91,7 +92,7 @@ public class MyStoreAdminApp {
 		return persistence.get();
 	}
 
-	public Server.Handler getHandler() {
+	public HttpHandler getHandler() {
 		return handler.get();
 	}
 }

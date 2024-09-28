@@ -24,8 +24,8 @@
 package com.janilla.mystore.storefront;
 
 import com.janilla.frontend.RenderEngine;
+import com.janilla.http.HeaderField;
 import com.janilla.http.HttpExchange;
-import com.janilla.media.HeaderField;
 import com.janilla.persistence.Persistence;
 import com.janilla.web.TemplateHandlerFactory;
 

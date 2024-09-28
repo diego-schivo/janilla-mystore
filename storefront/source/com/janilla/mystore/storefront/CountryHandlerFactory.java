@@ -30,10 +30,10 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.janilla.http.HeaderField;
 import com.janilla.http.HttpExchange;
 import com.janilla.http.HttpHandler;
 import com.janilla.http.HttpRequest;
-import com.janilla.media.HeaderField;
 import com.janilla.web.WebHandlerFactory;
 
 public class CountryHandlerFactory implements WebHandlerFactory {

@@ -24,8 +24,8 @@
 package com.janilla.mystore.admin;
 
 import com.janilla.frontend.RenderEngine;
+import com.janilla.http.HeaderField;
 import com.janilla.http.HttpExchange;
-import com.janilla.media.HeaderField;
 import com.janilla.web.TemplateHandlerFactory;
 
 public class CustomTemplateHandlerFactory extends TemplateHandlerFactory {

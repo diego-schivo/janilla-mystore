@@ -26,73 +26,78 @@ package com.janilla.mystore.storefront;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import com.janilla.http.HttpHandler;
+import com.janilla.http.HttpProtocol;
+import com.janilla.net.Net;
 import com.janilla.net.Server;
 import com.janilla.persistence.ApplicationPersistenceBuilder;
 import com.janilla.persistence.Persistence;
 import com.janilla.reflect.Factory;
-import com.janilla.util.Lazy;
 import com.janilla.util.Util;
 import com.janilla.web.ApplicationHandlerBuilder;
 
 public class MyStoreStorefrontApp {
 
 	public static void main(String[] args) {
-		var a = new MyStoreStorefrontApp();
-		{
-			var c = new Properties();
-			try (var s = a.getClass().getResourceAsStream("configuration.properties")) {
-				c.load(s);
+		try {
+			var pp = new Properties();
+			try (var is = MyStoreStorefrontApp.class.getResourceAsStream("configuration.properties")) {
+				pp.load(is);
+				if (args.length > 0) {
+					var p = args[0];
+					if (p.startsWith("~"))
+						p = System.getProperty("user.home") + p.substring(1);
+					pp.load(Files.newInputStream(Path.of(p)));
+				}
 			} catch (IOException e) {
 				throw new UncheckedIOException(e);
 			}
-			a.configuration = c;
+			var a = new MyStoreStorefrontApp(pp);
+			var hp = a.factory.create(HttpProtocol.class);
+			try (var is = Net.class.getResourceAsStream("testkeys")) {
+				hp.setSslContext(Net.getSSLContext("JKS", is, "passphrase".toCharArray()));
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+			hp.setHandler(a.handler);
+			var s = new Server();
+			s.setAddress(new InetSocketAddress(Integer.parseInt(a.configuration.getProperty("mystore.server.port"))));
+			s.setProtocol(hp);
+			s.serve();
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
-		a.getPersistence();
-
-		var s = a.getFactory().create(Server.class);
-		s.setAddress(new InetSocketAddress(Integer.parseInt(a.configuration.getProperty("mystore.server.port"))));
-		// s.setHandler(a.getHandler());
-		s.serve();
 	}
 
 	public Properties configuration;
 
-	private Supplier<Factory> factory = Lazy.of(() -> {
-		var f = new Factory();
-		f.setTypes(Stream.concat(Util.getPackageClasses(getClass().getPackageName()),
-				Util.getPackageClasses("com.janilla.mystore.backend")).toList());
-		f.setSource(this);
-		return f;
-	});
+	public Factory factory;
 
-	private Supplier<Persistence> persistence = Lazy.of(() -> {
-		var b = getFactory().create(ApplicationPersistenceBuilder.class);
-		return b.build();
-	});
+	public HttpHandler handler;
 
-	private Supplier<HttpHandler> handler = Lazy.of(() -> {
-		var b = getFactory().create(ApplicationHandlerBuilder.class);
-		return b.build();
-	});
+	public Persistence persistence;
+
+	public MyStoreStorefrontApp(Properties configuration) {
+		this.configuration = configuration;
+		factory = new Factory();
+		factory.setTypes(Util.getPackageClasses(getClass().getPackageName()).toList());
+		factory.setSource(this);
+		handler = factory.create(ApplicationHandlerBuilder.class).build();
+		{
+			var pb = factory.create(ApplicationPersistenceBuilder.class);
+			var p = configuration.getProperty("mystore.database.file");
+			if (p.startsWith("~"))
+				p = System.getProperty("user.home") + p.substring(1);
+			pb.setFile(Path.of(p));
+			persistence = pb.build();
+		}
+	}
 
 	public MyStoreStorefrontApp getApplication() {
 		return this;
-	}
-
-	public Factory getFactory() {
-		return factory.get();
-	}
-
-	public Persistence getPersistence() {
-		return persistence.get();
-	}
-
-	public HttpHandler getHandler() {
-		return handler.get();
 	}
 }

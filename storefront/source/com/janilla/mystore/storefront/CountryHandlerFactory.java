@@ -53,8 +53,9 @@ public class CountryHandlerFactory implements WebHandlerFactory {
 			if (e.country != null)
 				return null;
 			String p, c; {
-			var u = x.getUri();
-			p = u != null ? u.getPath() : null;
+//			var u = x.getUri();
+//			p = u != null ? u.getPath() : null;
+			p = x.getPath();
 			var i = p != null ? p.lastIndexOf('/') : -1;
 			var s = i >= 0 ? p.substring(i + 1) : p;
 			if (s == null || s.contains("."))

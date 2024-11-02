@@ -29,6 +29,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import com.janilla.http.HttpHandler;
 import com.janilla.http.HttpProtocol;
@@ -84,7 +85,8 @@ public class MyStoreStorefrontApp {
 	public MyStoreStorefrontApp(Properties configuration) {
 		this.configuration = configuration;
 		factory = new Factory();
-		factory.setTypes(Util.getPackageClasses(getClass().getPackageName()).toList());
+		factory.setTypes(Stream.concat(Util.getPackageClasses(getClass().getPackageName()),
+				Util.getPackageClasses("com.janilla.mystore.backend")).toList());
 		factory.setSource(this);
 		handler = factory.create(ApplicationHandlerBuilder.class).build();
 		{

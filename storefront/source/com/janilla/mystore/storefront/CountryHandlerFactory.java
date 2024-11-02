@@ -23,7 +23,6 @@
  */
 package com.janilla.mystore.storefront;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -53,8 +52,6 @@ public class CountryHandlerFactory implements WebHandlerFactory {
 			if (e.country != null)
 				return null;
 			String p, c; {
-//			var u = x.getUri();
-//			p = u != null ? u.getPath() : null;
 			p = x.getPath();
 			var i = p != null ? p.lastIndexOf('/') : -1;
 			var s = i >= 0 ? p.substring(i + 1) : p;
@@ -64,16 +61,8 @@ public class CountryHandlerFactory implements WebHandlerFactory {
 		}
 			if (c != null && countries.contains(c)) {
 				e.country = c;
-				var u = URI.create(p.length() > 3 ? p.substring(3) : "/");
-//				var q = new FilterHttpRequest(x) {
-//
-//					@Override
-//					public URI getUri() {
-//						return u;
-//					}
-//				};
-				var q = (HttpRequest) null;
-				return forward(q);
+				x.setTarget(x.getTarget().length() > 3 ? x.getTarget().substring(3) : "/");
+				return forward(x);
 			}
 			return redirect(p);
 		default:
